@@ -1,12 +1,6 @@
-/* ==========================================================
-   THE XAVIER CUP — prototype logic
-   Fixture data is MADE UP for demo purposes, generated once
-   below so it's stable across reloads.
-========================================================== */
-
 /* PHOTO NEEDED per team: a real candid/team photo for the chip
-   avatar (currently a colored initials circle). Square crop,
-   ~200x200px works well for the chip size used here. */
+  avatar (currently a colored initials circle). Square crop,
+  ~200x200px works well for the chip size used here. */
 const TEAMS = [
   { name:"NSG Pythons",       code:"NSG",  mascot:"Pythons",       color:"#2F9E52", photo:"PHOTO — NSG Pythons team huddle or mascot shot" },
   { name:"SBM Eagles",        code:"SBM",  mascot:"Eagles",        color:"#2F80ED", photo:"PHOTO — SBM Eagles team huddle or mascot shot" },
@@ -24,7 +18,7 @@ const VENUES = ["Main Gym", "Covered Court 1", "Covered Court 2", "Main Field", 
 const TIME_SLOTS = ["8:00 AM","9:30 AM","11:00 AM","1:00 PM","2:30 PM","3:30 PM","5:00 PM"];
 
 const DATES = ["2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14",
-               "2026-10-15","2026-10-16","2026-10-17","2026-10-18","2026-10-19","2026-10-20"];
+              "2026-10-15","2026-10-16","2026-10-17","2026-10-18","2026-10-19","2026-10-20"];
 const TODAY = "2026-10-12";
 const NOW_MINUTES = 15*60 + 30; // 3:30 PM — the prototype's "current time"
 const GAME_DURATION_MIN = 90;
@@ -56,7 +50,7 @@ function scoreFor(sport, rng){
 }
 
 /* build fixtures — a handful per day across sports/teams.
-   TODAY gets extra coverage so there's always a good spread of
+  TODAY gets extra coverage so there's always a good spread of
    finished / ongoing / upcoming games to demo. */
 let idCounter = 1;
 const fixtures = [];
@@ -110,14 +104,12 @@ function computeStatus(fx){
   return "ONGOING";
 }
 
-/* ============ STATE ============ */
 let currentTab = "fixtures";
 let savedTeam = localStorage.getItem("txcTeam") || "";
 let scheduleSelectedDate = TODAY;
 let calViewYear = 2026;
 let calViewMonth = 9; // October (0-indexed)
 
-/* ============ RENDER: fixture card ============ */
 function renderCard(fx){
   const status = computeStatus(fx);
   const statusClass = status.toLowerCase();
@@ -144,7 +136,6 @@ function renderCard(fx){
   `;
 }
 
-/* ============ RENDER: team strip + picker ============ */
 function teamChipHtml(team){
   const selected = team.name === savedTeam ? " selected" : "";
   return `
@@ -171,7 +162,6 @@ function selectTeam(teamName){
   renderFixtures();
 }
 
-/* ============ RENDER: All Fixtures tab ============ */
 function populateFilterOptions(){
   const dateSelect = document.getElementById('dateSelect');
   DATES.forEach((d,i)=>{
@@ -200,8 +190,6 @@ function renderFixtures(){
     ? filtered.map(renderCard).join('')
     : `<div class="empty-state">No games found for the selected filters.</div>`;
 }
-
-/* ============ RENDER: My Schedule tab ============ */
 
 function pad2(n){ return String(n).padStart(2,'0'); }
 function toDateStr(y,m,d){ return `${y}-${pad2(m+1)}-${pad2(d)}`; }
@@ -287,7 +275,6 @@ function renderDayDetail(){
     : `<div class="empty-state">No games for ${savedTeam} on this day.</div>`;
 }
 
-/* ============ TABS ============ */
 function switchTab(tab){
   if(tab !== "fixtures" && tab !== "my-schedule"){
     alert(`Navigating to ${tab.toUpperCase()} page...`);
@@ -306,7 +293,6 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
 document.getElementById('dateSelect').addEventListener('change', renderFixtures);
 document.getElementById('sportSelect').addEventListener('change', renderFixtures);
 
-/* ============ INIT ============ */
 populateFilterOptions();
 renderTeamStrip();
 renderFixtures();

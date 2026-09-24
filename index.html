@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Xavier Cup · TXC 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Compass · Xavier Ateneo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- ============================================================
-       NAVBAR
-  ============================================================= -->
   <header class="navbar">
     <div class="brand">
       <span class="brand__mark" aria-hidden="true">
@@ -21,54 +18,43 @@
           <path d="M30 14c0 22 40 22 40 36s-40 14-40 36M70 14c0 22-40 22-40 36s40 14 40 36" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
         </svg>
       </span>
-      <span class="brand__text">Campus Compass <span class="brand__dash">&ndash;</span> Xavier Ateneo</span>
+      <span class="brand__text">Campus Compass · Xavier Ateneo</span>
     </div>
     <nav class="nav-tabs">
       <button class="nav-btn" data-tab="map">Map</button>
-      <button class="nav-btn active" data-tab="fixtures">All Fixtures</button>
-      <button class="nav-btn" data-tab="my-schedule">My Schedule</button>
-      <button class="nav-btn" data-tab="news">News</button>
+      <button class="nav-btn active" data-tab="fixtures">Fixtures</button>
+      <button class="nav-btn" data-tab="my-schedule">Calendar</button>
+      <button class="nav-btn" data-tab="news">News and Updates</button>
     </nav>
   </header>
 
   <main class="container">
-
-    <!-- ============================================================
-         HERO — two-card layout in the FIFA WC 2026 style
-    ============================================================= -->
     <section class="hero">
       <div class="hero-card hero-card--navy">
-        <p class="hero-eyebrow">GENERAL ASSEMBLY &middot; TXC 2026</p>
-        <h1 class="hero-title">WHERE<br>CHAMPIONS<br><span>RISE.</span></h1>
-        <p class="hero-copy">Nine colleges, one campus, eleven days of competition &mdash; the intramurals season starts now.</p>
+        <p class="hero-eyebrow">THE XAVIER CUP &middot; 2026</p>
+        <h1 class="hero-title">ONE CAMPUS<br>EVERY COLLEGE<br><span>ONE TROPHY</span></h1>
+        <p class="hero-copy">Every fixture of the season — where it is being played, when it kicks off, and how it finished. Tap the map to see what is happening at a venue, or search for a team.</p>
         <div class="hero-stats">
           <div class="stat-chip"><span class="stat-num">9</span><span class="stat-label">Teams</span></div>
           <div class="stat-chip"><span class="stat-num">6</span><span class="stat-label">Sports</span></div>
-          <div class="stat-chip"><span class="stat-num">11</span><span class="stat-label">Days</span></div>
+          <div class="stat-chip"><span class="stat-num">10</span><span class="stat-label">Days</span></div>
         </div>
       </div>
       <div class="hero-card hero-card--lime">
-        <p class="hero-eyebrow hero-eyebrow--dark">HOST EDITION</p>
+        <p class="hero-eyebrow hero-eyebrow--dark">UNIVERSITY-WIDE</p>
         <h2 class="hero-title-dark">XAVIER<br>ATENEO<br>2026</h2>
         <p class="hero-dates">Oct 10 &ndash; Oct 20, 2026</p>
         <div class="hero-trophy" aria-hidden="true">🏆</div>
       </div>
     </section>
 
-    <!-- ============================================================
-         TEAM STRIP — doubles as a quick jump into My Schedule
-    ============================================================= -->
     <section class="team-strip" id="teamStrip" aria-label="Teams">
       <!-- PHOTO NEEDED per team: a real candid/team photo, square
-           crop, for the circular avatar in each chip below.
-           Rendered by script.js — see TEAMS[].photo for the shot
-           description of each one. Currently showing a colored
-           initials placeholder instead. -->
+          crop. Rendered by script.js — see TEAMS[].photo for the shot
+          description of each one. Currently showing a colored
+          initials placeholder instead -->
     </section>
 
-    <!-- ============================================================
-         ALL FIXTURES VIEW
-    ============================================================= -->
     <section class="view" id="fixturesView">
       <div class="view-controls">
         <h2 id="viewTitle">All Fixtures</h2>
@@ -86,11 +72,8 @@
       <div id="fixturesContainer" class="fixtures-grid"></div>
     </section>
 
-    <!-- ============================================================
-         MY SCHEDULE VIEW — team picker + calendar + day detail
-    ============================================================= -->
     <section class="view" id="myScheduleView" hidden>
-      <h2>⭐ My College Schedule</h2>
+      <h2>College Schedule</h2>
       <p class="section-lede">Pick your team above, then tap a day to see when they play.</p>
 
       <div class="calendar" id="calendar">
@@ -115,8 +98,8 @@
   </main>
 
   <footer class="site-footer">
-    <p class="site-footer__name">THE XAVIER CUP</p>
-    <p class="footer-sub">Xavier University &ndash; Ateneo de Cagayan &middot; General Assembly Organizational Trip 2026</p>
+    <p class="site-footer__name">Created By: Google Developer Group · Xavier Ateneo</p>
+    <p class="footer-sub">Built for The Xavier Cup · University-wide Season</p>
   </footer>
 
 <script src="script.js"></script>
