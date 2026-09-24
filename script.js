@@ -14,7 +14,7 @@ const TEAMS = [
 ];
 
 const SPORTS = ["Basketball", "Volleyball", "Football", "Badminton", "Esports", "Cheerdance"];
-const VENUES = ["Main Gym", "Covered Court 1", "Covered Court 2", "Main Field", "XU Hall", "Amphitheater"];
+const VENUES = ["Main Gym", "Covered Court 1", "Covered Court 2", "Main Field", "XU Hall", "Covered Court 3"];
 const TIME_SLOTS = ["8:00 AM","9:30 AM","11:00 AM","1:00 PM","2:30 PM","3:30 PM","5:00 PM"];
 
 const DATES = ["2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14",
