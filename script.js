@@ -2,15 +2,14 @@
   avatar (currently a colored initials circle). Square crop,
   ~200x200px works well for the chip size used here. */
 const TEAMS = [
-  { name:"NSG Pythons",       code:"NSG",  mascot:"Pythons",       color:"#2F9E52", photo:"PHOTO — NSG Pythons team huddle or mascot shot" },
-  { name:"SBM Eagles",        code:"SBM",  mascot:"Eagles",        color:"#2F80ED", photo:"PHOTO — SBM Eagles team huddle or mascot shot" },
-  { name:"CCS Wizards",       code:"CCS",  mascot:"Wizards",       color:"#7C5CFC", photo:"PHOTO — CCS Wizards team huddle or mascot shot" },
-  { name:"ENG'G Warriors",    code:"ENGG", mascot:"Warriors",      color:"#E4572E", photo:"PHOTO — ENG'G Warriors team huddle or mascot shot" },
-  { name:"ARTSCIES Tigers",   code:"ART",  mascot:"Tigers",        color:"#F2994A", photo:"PHOTO — ARTSCIES Tigers team huddle or mascot shot" },
-  { name:"LAW Lady Justices", code:"LAW",  mascot:"Lady Justices", color:"#C9971F", photo:"PHOTO — LAW Lady Justices team huddle or mascot shot" },
-  { name:"MED Wolves",        code:"MED",  mascot:"Wolves",        color:"#5C6B85", photo:"PHOTO — MED Wolves team huddle or mascot shot" },
-  { name:"AGGIES",            code:"AGG",  mascot:"Aggies",        color:"#7FAE2E", photo:"PHOTO — AGGIES team huddle or mascot shot" },
-  { name:"SOE Colossus",      code:"SOE",  mascot:"Colossus",      color:"#A9702F", photo:"PHOTO — SOE Colossus team huddle or mascot shot" },
+  { name:"NSG Pythons",           mascot:"Pythons",       color:"#2F9E52", img:"pictures/pythons.png" },
+  { name:"SBM Eagles",            mascot:"Eagles",        color:"#2F80ED", img:"pictures/eagles.jpeg" },
+  { name:"CCS Wizards",           mascot:"Wizards",       color:"#7C5CFC", img:"pictures/wizards.png" },
+  { name:"ENG'G Warriors",        mascot:"Warriors",      color:"#E4572E", img:"pictures/warriors.jpeg" },
+  { name:"ARTSCIES Tigers",       mascot:"Tigers",        color:"#F2994A", img:"pictures/tigers.png" },
+  { name:"LAW Lady Justices",     mascot:"Lady Justices", color:"#C9971F", img:"pictures/law.png" },
+  { name:"MED Wolves",            mascot:"Wolves",        color:"#5C6B85", img:"pictures/wolves.png" },
+  { name:"AGGIES & SOE Colossus", mascot:"Colossus",      color:"#7FAE2E", img:"pictures/colossus.png" },
 ];
 
 const SPORTS = ["Basketball", "Volleyball", "Football", "Badminton", "Esports", "Cheerdance"];
@@ -139,9 +138,8 @@ function renderCard(fx){
 function teamChipHtml(team){
   const selected = team.name === savedTeam ? " selected" : "";
   return `
-    <div class="team-chip${selected}" data-team="${team.name}" style="background:${team.color}" title="${team.photo}">
-      <div class="team-chip__avatar">${team.code}</div>
-      <div class="team-chip__name">${team.mascot}</div>
+    <div class="team-chip${selected}" data-team="${team.name}" style="background:${team.color}" title="${team.name}">
+      <img class="team-chip__photo" src="${team.img}" alt="${team.name}">
     </div>
   `;
 }

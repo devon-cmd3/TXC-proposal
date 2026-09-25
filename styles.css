@@ -1,8 +1,3 @@
-/* ==========================================================
-   THE XAVIER CUP — FIFA World Cup 2026 palette
-   navy card / lime accent / cream ground, bold condensed type.
-========================================================== */
-
 :root{
   --navy:       #101B45;
   --navy-deep:  #0A1230;
@@ -41,10 +36,6 @@ body{
 a{ color:inherit; text-decoration:none; }
 h1,h2,h3{ font-family:var(--font-display); }
 
-/* ---------------------------------------------------------
-   PHOTO PLACEHOLDER (used sparingly — most cards here are
-   solid-color per the World Cup reference, not photographic)
---------------------------------------------------------- */
 .photo-placeholder{
   display:flex; align-items:center; justify-content:center;
   background:repeating-linear-gradient(135deg, rgba(16,27,69,.06) 0 8px, rgba(16,27,69,0) 8px 16px), var(--cream-card);
@@ -53,9 +44,6 @@ h1,h2,h3{ font-family:var(--font-display); }
   font-size:10px; font-weight:700; text-align:center;
 }
 
-/* ---------------------------------------------------------
-   NAVBAR
---------------------------------------------------------- */
 .navbar{
   display:flex; align-items:center; justify-content:space-between;
   gap:16px; padding:16px 32px; background:var(--white);
@@ -79,14 +67,8 @@ h1,h2,h3{ font-family:var(--font-display); }
 .nav-btn:hover{ background:var(--cream); color:var(--navy); }
 .nav-btn.active{ background:var(--navy); color:var(--white); }
 
-/* ---------------------------------------------------------
-   CONTAINER
---------------------------------------------------------- */
 .container{ max-width:1100px; margin:0 auto; padding:28px 24px 0; }
 
-/* ---------------------------------------------------------
-   HERO
---------------------------------------------------------- */
 .hero{ display:grid; grid-template-columns:1.3fr 1fr; gap:18px; margin-bottom:24px; }
 .hero-card{ border-radius:var(--radius-lg); padding:32px; position:relative; overflow:hidden; }
 .hero-card--navy{ background:var(--navy); color:var(--white); }
@@ -119,31 +101,22 @@ h1,h2,h3{ font-family:var(--font-display); }
 .hero-venues{ display:flex; gap:8px; flex-wrap:wrap; }
 .venue-pill{ background:var(--navy); color:var(--white); font-size:11px; font-weight:700; padding:6px 12px; border-radius:var(--radius-pill); }
 
-/* ---------------------------------------------------------
-   TEAM STRIP / PICKER (shared chip styling)
---------------------------------------------------------- */
 .team-strip{
-  display:grid; grid-template-columns:repeat(auto-fit, minmax(88px, 1fr));
-  gap:10px; padding:4px 2px 18px; width:100%;
+  display:grid; grid-template-columns:repeat(4, 1fr);
+  gap:18px; padding:4px 2px 18px; width:100%;
 }
 .team-chip{
-  border:2px solid transparent;
-  border-radius:var(--radius); padding:14px 8px; text-align:center; cursor:pointer;
-  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  border-radius:var(--radius); overflow:hidden;
+  cursor:pointer; display:block;
+  aspect-ratio:3/4;
+  transition:transform .12s ease, box-shadow .12s ease;
 }
 .team-chip:hover{ transform:translateY(-2px); box-shadow:var(--shadow-sm); }
-.team-chip.selected{ border-color:var(--navy); box-shadow:var(--shadow-md); }
-.team-chip__avatar{
-  width:42px; height:42px; border-radius:50%; margin:0 auto 8px;
-  display:flex; align-items:center; justify-content:center;
-  background:rgba(255,255,255,.22); border:1.5px solid rgba(255,255,255,.55);
-  color:#fff; font-family:var(--font-display); font-weight:700; font-size:11.5px;
+.team-chip.selected{ box-shadow:0 0 0 3px var(--lime), var(--shadow-md); }
+.team-chip__photo{
+  width:100%; height:100%; object-fit:cover; display:block;
 }
-.team-chip__name{ font-size:11.5px; font-weight:700; line-height:1.2; color:#fff; }
 
-/* ---------------------------------------------------------
-   VIEWS / CONTROLS
---------------------------------------------------------- */
 .view[hidden]{ display:none; }
 .view-controls{
   display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;
@@ -159,9 +132,6 @@ h1,h2,h3{ font-family:var(--font-display); }
   background:var(--white); font-family:var(--font-body); font-size:13px; color:var(--ink);
 }
 
-/* ---------------------------------------------------------
-   FIXTURE CARDS
---------------------------------------------------------- */
 .fixtures-grid{ display:flex; flex-direction:column; gap:10px; }
 .card{
   background:var(--white); border-radius:var(--radius); padding:16px 20px;
@@ -194,9 +164,6 @@ h1,h2,h3{ font-family:var(--font-display); }
 
 .empty-state{ text-align:center; padding:36px 20px; background:var(--white); border-radius:var(--radius); color:var(--muted); border:1px dashed var(--border); font-size:13.5px; }
 
-/* ---------------------------------------------------------
-   CALENDAR (My Schedule) — real month grid, macOS-Calendar-style
---------------------------------------------------------- */
 .calendar{
   background:var(--navy); border-radius:var(--radius-lg); overflow:hidden;
   margin-bottom:22px; box-shadow:var(--shadow-md);
@@ -251,19 +218,14 @@ h1,h2,h3{ font-family:var(--font-display); }
 .day-detail__head{ margin-bottom:12px; }
 .day-detail__head h3{ font-size:16px; }
 
-/* ---------------------------------------------------------
-   FOOTER
---------------------------------------------------------- */
 .site-footer{ text-align:center; padding:40px 20px 10px; color:var(--muted); font-size:12.5px; }
 .site-footer__name{ font-family:var(--font-display); font-weight:700; color:var(--navy); font-size:14px; margin-bottom:4px; }
 
-/* ---------------------------------------------------------
-   RESPONSIVE
---------------------------------------------------------- */
 @media (max-width:760px){
   .hero{ grid-template-columns:1fr; }
   .navbar{ padding:14px 18px; }
   .container{ padding:22px 16px 0; }
   .card{ flex-direction:column; align-items:flex-start; }
   .score{ align-self:flex-end; }
+  .team-strip{ grid-template-columns:repeat(2, 1fr); }
 }
