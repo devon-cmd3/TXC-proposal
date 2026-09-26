@@ -48,9 +48,6 @@ function scoreFor(sport, rng){
   let a=randInt(rng,0,5), b=randInt(rng,0,5); if(a===b) b++; return `${a} - ${b}`;
 }
 
-/* build fixtures — a handful per day across sports/teams.
-  TODAY gets extra coverage so there's always a good spread of
-   finished / ongoing / upcoming games to demo. */
 let idCounter = 1;
 const fixtures = [];
 DATES.forEach(date=>{
@@ -275,7 +272,7 @@ function renderDayDetail(){
 }
 
 /* ============ NEWS & UPDATES ============ */
-let newsViewMode = "carousel"; // "carousel" | "grid"
+let newsViewMode = "carousel";
 
 const NEWS = [
   { id:1,  source:"CSG",       title:"Opening Ceremony Set for Oct 10",       snippet:"CSG confirms the opening program starts 7AM sharp at the Main Field, all colleges required to send a delegation.", date:"Oct 3" },
@@ -381,10 +378,10 @@ document.getElementById('newsSeeAll').addEventListener('click', ()=>{
 
 /* ============ EVENTS (under News & Updates) ============ */
 const EVENTS = [
-  { team:"CCS Wizards",     title:"Wizards Watch Party",        img:"wizardsEvent.png",  desc:"CCS hosts a community watch party for their basketball opener, free popcorn and merch giveaways for anyone repping purple." },
-  { team:"NSG Pythons",     title:"Pythons Pep Rally",          img:"pythonsEvent.png",  desc:"NSG kicks off tournament week with a pep rally and a short fun run around the oval before their first game." },
-  { team:"ENG'G Warriors",  title:"Warriors Build Night",       img:"warriorsEvent.png", desc:"ENG'G's drumline leads a pre-game hype walk-in to the covered court the night before their opener." },
-  { team:"SBM Eagles",      title:"Eagles Alumni Homecoming",   img:"eaglesEvent.png",   desc:"SBM welcomes alumni back for a homecoming send-off ahead of their volleyball match." },
+  { team:"CCS Wizards",     title:"Wizards Most Wanted",        img:"pictures/wizardsEvent.png",  desc:"CCS organization GDGC’s Chief Technology Officer claims that the moon landing was fake." },
+  { team:"NSG Pythons",     title:"Pythons VS Warriors",          img:"pictures/pythonsEvent.png",  desc:"NSG started the kick off and are completely on par with the undefeated ENG'G Warriors." },
+  { team:"ENG'G Warriors",  title:"Warriors Building an Iron Wall",img:"pictures/warriorsEvent.png", desc:"ENG'G's volleyball iron wall has been impenetrable so far! How will they do against the fierce Wolves.." },
+  { team:"SBM Eagles",      title:"Eagles at the Top",   img:"pictures/eaglesEvent.png",   desc:"SBM reigns victorious last as the Champions of TXC 2025!" },
 ];
 
 function renderEvents(){
