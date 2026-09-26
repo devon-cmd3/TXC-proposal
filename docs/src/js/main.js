@@ -1,6 +1,12 @@
-/* PHOTO NEEDED per team: a real candid/team photo for the chip
-  avatar (currently a colored initials circle). Square crop,
-  ~200x200px works well for the chip size used here. */
+import { 
+  SPORTS, 
+  DATES, 
+  TODAY, 
+  NOW_MINUTES, 
+  GAME_DURATION_MIN, 
+  fixtures, 
+  timeToMinutes 
+} from './data/fixtures.js';
 
 
 function computeStatus(fx){
