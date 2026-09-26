@@ -1,16 +1,6 @@
 /* PHOTO NEEDED per team: a real candid/team photo for the chip
   avatar (currently a colored initials circle). Square crop,
   ~200x200px works well for the chip size used here. */
-const TEAMS = [
-  { name:"NSG Pythons",           mascot:"Pythons",         img:"pictures/pythons.png" },
-  { name:"SBM Eagles",            mascot:"Eagles",          img:"pictures/eagles.jpeg" },
-  { name:"CCS Wizards",           mascot:"Wizards",         img:"pictures/wizards.png" },
-  { name:"ENG'G Warriors",        mascot:"Warriors",        img:"pictures/warriors.jpeg" },
-  { name:"ARTSCIES Tigers",       mascot:"Tigers",          img:"pictures/tigers.png" },
-  { name:"LAW Lady Justices",     mascot:"Lady Justices",   img:"pictures/law.png" },
-  { name:"MED Wolves",            mascot:"Wolves",          img:"pictures/wolves.png" },
-  { name:"AGGIES & SOE Colossus", mascot:"Colossus",        img:"pictures/colossus.png" },
-];
 
 const SPORTS = ["Basketball", "Volleyball", "Football", "Badminton", "Esports", "Cheerdance"];
 const VENUES = ["Main Gym", "Covered Court 1", "Covered Court 2", "Main Field", "XU Hall", "Covered Court 3"];
