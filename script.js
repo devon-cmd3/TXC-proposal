@@ -2,14 +2,14 @@
   avatar (currently a colored initials circle). Square crop,
   ~200x200px works well for the chip size used here. */
 const TEAMS = [
-  { name:"NSG Pythons",           mascot:"Pythons",       color:"#2F9E52", img:"pictures/pythons.png" },
-  { name:"SBM Eagles",            mascot:"Eagles",        color:"#2F80ED", img:"pictures/eagles.jpeg" },
-  { name:"CCS Wizards",           mascot:"Wizards",       color:"#7C5CFC", img:"pictures/wizards.png" },
-  { name:"ENG'G Warriors",        mascot:"Warriors",      color:"#E4572E", img:"pictures/warriors.jpeg" },
-  { name:"ARTSCIES Tigers",       mascot:"Tigers",        color:"#F2994A", img:"pictures/tigers.png" },
-  { name:"LAW Lady Justices",     mascot:"Lady Justices", color:"#C9971F", img:"pictures/law.png" },
-  { name:"MED Wolves",            mascot:"Wolves",        color:"#5C6B85", img:"pictures/wolves.png" },
-  { name:"AGGIES & SOE Colossus", mascot:"Colossus",      color:"#7FAE2E", img:"pictures/colossus.png" },
+  { name:"NSG Pythons",           mascot:"Pythons",         img:"pictures/pythons.png" },
+  { name:"SBM Eagles",            mascot:"Eagles",          img:"pictures/eagles.jpeg" },
+  { name:"CCS Wizards",           mascot:"Wizards",         img:"pictures/wizards.png" },
+  { name:"ENG'G Warriors",        mascot:"Warriors",        img:"pictures/warriors.jpeg" },
+  { name:"ARTSCIES Tigers",       mascot:"Tigers",          img:"pictures/tigers.png" },
+  { name:"LAW Lady Justices",     mascot:"Lady Justices",   img:"pictures/law.png" },
+  { name:"MED Wolves",            mascot:"Wolves",          img:"pictures/wolves.png" },
+  { name:"AGGIES & SOE Colossus", mascot:"Colossus",        img:"pictures/colossus.png" },
 ];
 
 const SPORTS = ["Basketball", "Volleyball", "Football", "Badminton", "Esports", "Cheerdance"];
@@ -143,16 +143,27 @@ function teamChipHtml(team){
 }
 
 function renderTeamStrip(){
-  document.getElementById('teamStrip').innerHTML = TEAMS.map(t=>teamChipHtml(t)).join('');
-  document.querySelectorAll('#teamStrip .team-chip').forEach(chip=>{
+  const chipsHtml = TEAMS.map(t=>teamChipHtml(t)).join('');
+  ['teamStripFixtures', 'teamStripSchedule'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.innerHTML = chipsHtml;
+  });
+  document.querySelectorAll('.team-strip .team-chip').forEach(chip=>{
     chip.addEventListener('click', ()=> selectTeam(chip.dataset.team));
+  });
+}
+
+function highlightSelectedTeam(){
+  document.querySelectorAll('.team-strip .team-chip').forEach(chip=>{
+    chip.classList.toggle('selected', chip.dataset.team === savedTeam);
   });
 }
 
 function selectTeam(teamName){
   savedTeam = teamName;
   localStorage.setItem('txcTeam', teamName);
-  renderTeamStrip();
+  highlightSelectedTeam();
   renderCalendar();
   renderDayDetail();
   renderFixtures();
@@ -275,18 +286,18 @@ function renderDayDetail(){
 let newsViewMode = "carousel";
 
 const NEWS = [
-  { id:1,  source:"CSG",       title:"Opening Ceremony Set for Oct 10",       snippet:"CSG confirms the opening program starts 7AM sharp at the Main Field, all colleges required to send a delegation.", date:"Oct 3" },
-  { id:2,  source:"Pythons",   title:"NSG Pythons Reveal Final Roster",       snippet:"NSG locks in their basketball and volleyball lineups after a week of internal tryouts.", date:"Oct 4" },
-  { id:3,  source:"Eagles",    title:"SBM Eagles Add Extra Practice Days",    snippet:"SBM books the covered court for two extra late-afternoon sessions ahead of the opener.", date:"Oct 4" },
-  { id:4,  source:"CSG",       title:"Updated Venue Map Released",           snippet:"CSG publishes the official venue assignments for every sport across the eleven-day tournament.", date:"Oct 5" },
-  { id:5,  source:"Wizards",   title:"CCS Wizards Unveil New Jersey Design", snippet:"CCS debuts a new jersey design ahead of their basketball and esports campaigns.", date:"Oct 5" },
-  { id:6,  source:"Warriors",  title:"ENG'G Warriors Injury Update",         snippet:"A key badminton player is listed day-to-day after a minor ankle tweak in practice.", date:"Oct 6" },
-  { id:7,  source:"Tigers",    title:"ARTSCIES Tigers Cheer Squad Debuts",   snippet:"The Tigers' cheerdance squad previews their routine ahead of the Amphitheater showcase.", date:"Oct 6" },
-  { id:8,  source:"CSG",       title:"Weather Contingency Plan Shared",      snippet:"CSG outlines the rain contingency schedule in case outdoor matches need to be moved.", date:"Oct 7" },
-  { id:9,  source:"Lady Justices", title:"LAW Lady Justices Debate Prep",    snippet:"LAW's debate team runs a mock round open to other colleges as a warm-up.", date:"Oct 7" },
-  { id:10, source:"Wolves",    title:"MED Wolves Volleyball Scrimmage Recap", snippet:"MED edges out a tight practice scrimmage as they finalize their starting six.", date:"Oct 8" },
-  { id:11, source:"Colossus",  title:"AGGIES &amp; SOE Colossus Go All In",  snippet:"The combined Colossus squad rallies behind a shared banner for the first time this year.", date:"Oct 8" },
-  { id:12, source:"CSG",       title:"Esports Bracket Now Live",             snippet:"CSG posts the full esports bracket, group stage matches begin the second week.", date:"Oct 9" },
+  { id:1,  source:"CSG",            title:"Opening Ceremony Set for Oct 10",        snippet:"CSG confirms the opening program starts 7AM sharp at the Main Field, all colleges required to send a delegation.", date:"Oct 3" },
+  { id:2,  source:"Pythons",        title:"NSG Pythons Reveal Final Roster",        snippet:"NSG locks in their basketball and volleyball lineups after a week of internal tryouts.",                           date:"Oct 4" },
+  { id:3,  source:"Eagles",         title:"SBM Eagles Add Extra Practice Days",     snippet:"SBM books the covered court for two extra late-afternoon sessions ahead of the opener.",                           date:"Oct 4" },
+  { id:4,  source:"CSG",            title:"Updated Venue Map Released",             snippet:"CSG publishes the official venue assignments for every sport across the eleven-day tournament.",                   date:"Oct 5" },
+  { id:5,  source:"Wizards",        title:"CCS Wizards Unveil New Jersey Design",   snippet:"CCS debuts a new jersey design ahead of their basketball and esports campaigns.",                                  date:"Oct 5" },
+  { id:6,  source:"Warriors",       title:"ENG'G Warriors Injury Update",           snippet:"A key badminton player is listed day-to-day after a minor ankle tweak in practice.",                               date:"Oct 6" },
+  { id:7,  source:"Tigers",         title:"ARTSCIES Tigers Cheer Squad Debuts",     snippet:"The Tigers' cheerdance squad previews their routine ahead of the Amphitheater showcase.",                          date:"Oct 6" },
+  { id:8,  source:"CSG",            title:"Weather Contingency Plan Shared",        snippet:"CSG outlines the rain contingency schedule in case outdoor matches need to be moved.",                             date:"Oct 7" },
+  { id:9,  source:"Lady Justices",  title:"LAW Lady Justices Debate Prep",          snippet:"LAW's debate team runs a mock round open to other colleges as a warm-up.",                                         date:"Oct 7" },
+  { id:10, source:"Wolves",         title:"MED Wolves Volleyball Scrimmage Recap",  snippet:"MED edges out a tight practice scrimmage as they finalize their starting six.",                                    date:"Oct 8" },
+  { id:11, source:"Colossus",       title:"AGGIES &amp; SOE Colossus Go All In",    snippet:"The combined Colossus squad rallies behind a shared banner for the first time this year.",                         date:"Oct 8" },
+  { id:12, source:"CSG",            title:"Esports Bracket Now Live",               snippet:"CSG posts the full esports bracket, group stage matches begin the second week.",                                   date:"Oct 9" },
 ];
 
 function renderNewsFilters(){
@@ -378,10 +389,10 @@ document.getElementById('newsSeeAll').addEventListener('click', ()=>{
 
 /* ============ EVENTS (under News & Updates) ============ */
 const EVENTS = [
-  { team:"CCS Wizards",     title:"Wizards Most Wanted",        img:"pictures/wizardsEvent.png",  desc:"CCS organization GDGC’s Chief Technology Officer claims that the moon landing was fake." },
-  { team:"NSG Pythons",     title:"Pythons VS Warriors",          img:"pictures/pythonsEvent.png",  desc:"NSG started the kick off and are completely on par with the undefeated ENG'G Warriors." },
-  { team:"ENG'G Warriors",  title:"Warriors Building an Iron Wall",img:"pictures/warriorsEvent.png", desc:"ENG'G's volleyball iron wall has been impenetrable so far! How will they do against the fierce Wolves.." },
-  { team:"SBM Eagles",      title:"Eagles at the Top",   img:"pictures/eaglesEvent.png",   desc:"SBM reigns victorious last as the Champions of TXC 2025!" },
+  { team:"CCS Wizards",     title:"Wizard's Most Wanted",             img:"pictures/wizardsEvent.png",  desc:"CCS organization GDGC's Chief Technology Officer claims that the moon landing was fake." },
+  { team:"NSG Pythons",     title:"Pythons VS Warriors",              img:"pictures/pythonsEvent.png",  desc:"NSG started the kick off and are completely on par with the undefeated ENG'G Warriors." },
+  { team:"ENG'G Warriors",  title:"Warriors Building an Iron Wall",   img:"pictures/warriorsEvent.png", desc:"ENG'G's volleyball iron wall has been impenetrable so far! How will they do against the fierce Wolves.." },
+  { team:"SBM Eagles",      title:"Eagles at the Top",                img:"pictures/eaglesEvent.png",   desc:"SBM reigns victorious as the Champions of TXC 2025!" },
 ];
 
 function renderEvents(){
@@ -398,9 +409,20 @@ function renderEvents(){
 }
 
 /* ============ TABS ============ */
+function updateNavPill(){
+  const activeBtn = document.querySelector('.nav-btn.active');
+  const pill = document.getElementById('navPill');
+  if(!activeBtn || !pill) return;
+  const navRect = activeBtn.parentElement.getBoundingClientRect();
+  const btnRect = activeBtn.getBoundingClientRect();
+  pill.style.left = (btnRect.left - navRect.left) + 'px';
+  pill.style.width = btnRect.width + 'px';
+}
+
 function switchTab(tab){
   currentTab = tab;
   document.querySelectorAll('.nav-btn').forEach(b=> b.classList.toggle('active', b.dataset.tab === tab));
+  updateNavPill();
   document.getElementById('mapView').hidden = tab !== 'map';
   document.getElementById('fixturesView').hidden = tab !== 'fixtures';
   document.getElementById('myScheduleView').hidden = tab !== 'my-schedule';
@@ -410,6 +432,8 @@ function switchTab(tab){
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click', ()=> switchTab(btn.dataset.tab));
 });
+
+window.addEventListener('resize', updateNavPill);
 
 document.getElementById('dateSelect').addEventListener('change', renderFixtures);
 document.getElementById('sportSelect').addEventListener('change', renderFixtures);
@@ -423,3 +447,4 @@ renderDayDetail();
 renderNewsFilters();
 renderNews();
 renderEvents();
+updateNavPill();

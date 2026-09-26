@@ -21,25 +21,21 @@
       <span class="brand__text">Campus Compass · Xavier Ateneo</span>
     </div>
     <nav class="nav-tabs">
-      <button class="nav-btn" data-tab="map">Map</button>
-      <button class="nav-btn active" data-tab="fixtures">Fixtures</button>
+      <span class="nav-pill" id="navPill" aria-hidden="true"></span>
+      <button class="nav-btn active" data-tab="map">Map</button>
+      <button class="nav-btn" data-tab="fixtures">Fixtures</button>
       <button class="nav-btn" data-tab="my-schedule">Calendar</button>
       <button class="nav-btn" data-tab="news">News &amp; Updates</button>
     </nav>
   </header>
 
   <main class="container">
-    <section class="team-strip" id="teamStrip" aria-label="Teams">
-      <!-- Each chip renders an <img src="[team].jpg"> — see TEAMS[].img
-          in script.js for the exact filename per team. -->
-    </section>
-
-    <section class="view" id="mapView" hidden>
+    <section class="view" id="mapView">
       <div class="hero">
         <div class="hero-card hero-card--navy">
           <p class="hero-eyebrow">THE XAVIER CUP &middot; 2026</p>
           <h1 class="hero-title">ONE CAMPUS<br> EVERY COLLEGE<br><span> ONE TROPHY</span></h1>
-          <p class="hero-copy">Every fixture of the season, where it is being played, when it kicks off, and how it finished. Tap the map to see what is happening at a venue, or search for a team.</p>
+          <p class="hero-copy">Every fixture of the season &mdash; where it is being played, when it kicks off, and how it is finished. Tap the map to see what is happening at a venue, or search for a team.</p>
           <div class="hero-stats">
             <div class="stat-chip"><span class="stat-num">8</span><span class="stat-label">Teams</span></div>
             <div class="stat-chip"><span class="stat-num">6</span><span class="stat-label">Sports</span></div>
@@ -53,13 +49,21 @@
           <div class="hero-trophy" aria-hidden="true">🏆</div>
         </div>
       </div>
+
+      <!-- MAP GOES HERE — this whole block is a placeholder. -->
+      <div class="map-placeholder-note" id="campusMapSlot">
+        <strong>MAP GOES HERE</strong>
+        <span>Interactive campus map placeholder &mdash; venue pins, filters, etc.</span>
+      </div>
     </section>
 
-    <section class="view" id="fixturesView">
+    <section class="view" id="fixturesView" hidden>
       <div class="view-header">
+        <svg class="view-header__icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="18" y="14" width="64" height="72" rx="6" fill="none" stroke="currentColor" stroke-width="5"/><path d="M30 34h40M30 50h40M30 66h26" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
         <h2>All Fixtures</h2>
         <p>Every match across the tournament, filterable by day and sport.</p>
       </div>
+      <section class="team-strip" id="teamStripFixtures" aria-label="Teams"></section>
       <div class="view-controls">
         <div class="filter-group">
           <label for="dateSelect">Date</label>
@@ -77,9 +81,11 @@
 
     <section class="view" id="myScheduleView" hidden>
       <div class="view-header">
+        <svg class="view-header__icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="20" width="72" height="66" rx="6" fill="none" stroke="currentColor" stroke-width="5"/><path d="M14 38h72M30 12v16M70 12v16" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
         <h2>My Schedule</h2>
         <p>Pick your team above, then tap a day to see when they play.</p>
       </div>
+      <section class="team-strip" id="teamStripSchedule" aria-label="Teams"></section>
 
       <div class="calendar" id="calendar">
         <div class="calendar__head">
@@ -102,6 +108,7 @@
 
     <section class="view" id="newsView" hidden>
       <div class="view-header">
+        <svg class="view-header__icon" viewBox="0 0 100 100" aria-hidden="true"><path d="M20 30h44l16-14v68l-16-14H20a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><circle cx="34" cy="50" r="4" fill="currentColor"/><path d="M46 44h20M46 56h14" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
         <h2>News &amp; Updates</h2>
         <p>Announcements and stories from every college and CSG.</p>
       </div>
@@ -121,7 +128,6 @@
         <div class="events-grid" id="eventsGrid"></div>
       </div>
     </section>
-
   </main>
 
   <footer class="site-footer">
