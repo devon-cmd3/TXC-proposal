@@ -108,6 +108,7 @@ let savedTeam = localStorage.getItem("txcTeam") || "";
 let scheduleSelectedDate = TODAY;
 let calViewYear = 2026;
 let calViewMonth = 9; // October (0-indexed)
+let newsFilter = "All";
 
 function renderCard(fx){
   const status = computeStatus(fx);
@@ -273,15 +274,140 @@ function renderDayDetail(){
     : `<div class="empty-state">No games for ${savedTeam} on this day.</div>`;
 }
 
-function switchTab(tab){
-  if(tab !== "fixtures" && tab !== "my-schedule"){
-    alert(`Navigating to ${tab.toUpperCase()} page...`);
+/* ============ NEWS & UPDATES ============ */
+let newsViewMode = "carousel"; // "carousel" | "grid"
+
+const NEWS = [
+  { id:1,  source:"CSG",       title:"Opening Ceremony Set for Oct 10",       snippet:"CSG confirms the opening program starts 7AM sharp at the Main Field, all colleges required to send a delegation.", date:"Oct 3" },
+  { id:2,  source:"Pythons",   title:"NSG Pythons Reveal Final Roster",       snippet:"NSG locks in their basketball and volleyball lineups after a week of internal tryouts.", date:"Oct 4" },
+  { id:3,  source:"Eagles",    title:"SBM Eagles Add Extra Practice Days",    snippet:"SBM books the covered court for two extra late-afternoon sessions ahead of the opener.", date:"Oct 4" },
+  { id:4,  source:"CSG",       title:"Updated Venue Map Released",           snippet:"CSG publishes the official venue assignments for every sport across the eleven-day tournament.", date:"Oct 5" },
+  { id:5,  source:"Wizards",   title:"CCS Wizards Unveil New Jersey Design", snippet:"CCS debuts a new jersey design ahead of their basketball and esports campaigns.", date:"Oct 5" },
+  { id:6,  source:"Warriors",  title:"ENG'G Warriors Injury Update",         snippet:"A key badminton player is listed day-to-day after a minor ankle tweak in practice.", date:"Oct 6" },
+  { id:7,  source:"Tigers",    title:"ARTSCIES Tigers Cheer Squad Debuts",   snippet:"The Tigers' cheerdance squad previews their routine ahead of the Amphitheater showcase.", date:"Oct 6" },
+  { id:8,  source:"CSG",       title:"Weather Contingency Plan Shared",      snippet:"CSG outlines the rain contingency schedule in case outdoor matches need to be moved.", date:"Oct 7" },
+  { id:9,  source:"Lady Justices", title:"LAW Lady Justices Debate Prep",    snippet:"LAW's debate team runs a mock round open to other colleges as a warm-up.", date:"Oct 7" },
+  { id:10, source:"Wolves",    title:"MED Wolves Volleyball Scrimmage Recap", snippet:"MED edges out a tight practice scrimmage as they finalize their starting six.", date:"Oct 8" },
+  { id:11, source:"Colossus",  title:"AGGIES &amp; SOE Colossus Go All In",  snippet:"The combined Colossus squad rallies behind a shared banner for the first time this year.", date:"Oct 8" },
+  { id:12, source:"CSG",       title:"Esports Bracket Now Live",             snippet:"CSG posts the full esports bracket, group stage matches begin the second week.", date:"Oct 9" },
+];
+
+function renderNewsFilters(){
+  const sources = ["All", "CSG", ...TEAMS.map(t=>t.mascot)];
+  const el = document.getElementById('newsFilters');
+  el.innerHTML = sources.map(s=>
+    `<button class="news-filter${s===newsFilter?' active':''}" data-source="${s}">${s}</button>`
+  ).join('');
+  el.querySelectorAll('.news-filter').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      newsFilter = btn.dataset.source;
+      renderNewsFilters();
+      renderNews();
+    });
+  });
+}
+
+function newsCardHtml(item){
+  return `
+    <div class="news-card">
+      <div class="news-card__title">${item.title}</div>
+      <div class="news-card__snippet">${item.snippet}</div>
+      <div class="news-card__foot">
+        <span class="news-card__date">${item.date}</span>
+        <!-- TODO: point this at the org's Facebook page once it's live -->
+        <button class="news-card__more" type="button">See More</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderNews(){
+  const filtered = newsFilter === "All" ? NEWS : NEWS.filter(n => n.source === newsFilter);
+  const carousel = document.getElementById('newsCarousel');
+  const grid = document.getElementById('newsGrid');
+  const track = document.getElementById('newsTrack');
+  const seeAllBtn = document.getElementById('newsSeeAll');
+
+  seeAllBtn.classList.toggle('active', newsViewMode === 'grid');
+  seeAllBtn.textContent = newsViewMode === 'grid' ? 'Back to Carousel' : 'See All';
+
+  if(newsViewMode === 'grid'){
+    carousel.hidden = true;
+    grid.hidden = false;
+    grid.innerHTML = filtered.length
+      ? filtered.map(newsCardHtml).join('')
+      : `<div class="empty-state">No news for this filter yet.</div>`;
     return;
   }
+
+  carousel.hidden = false;
+  grid.hidden = true;
+
+  if(filtered.length === 0){
+    carousel.onscroll = null;
+    track.innerHTML = `<div class="empty-state">No news for this filter yet.</div>`;
+    return;
+  }
+
+  const singleHtml = filtered.map(newsCardHtml).join('');
+  track.innerHTML = singleHtml;
+
+  requestAnimationFrame(()=>{
+    const overflowing = track.scrollWidth > carousel.clientWidth + 4;
+
+    if(!overflowing){
+      carousel.onscroll = null;
+      return;
+    }
+
+    track.innerHTML = singleHtml + singleHtml + singleHtml;
+    const singleSetWidth = track.scrollWidth / 3;
+    carousel.scrollLeft = singleSetWidth;
+
+    carousel.onscroll = ()=>{
+      if(carousel.scrollLeft <= 0){
+        carousel.scrollLeft += singleSetWidth;
+      } else if(carousel.scrollLeft >= singleSetWidth * 2){
+        carousel.scrollLeft -= singleSetWidth;
+      }
+    };
+  });
+}
+
+document.getElementById('newsSeeAll').addEventListener('click', ()=>{
+  newsViewMode = newsViewMode === 'grid' ? 'carousel' : 'grid';
+  renderNews();
+});
+
+/* ============ EVENTS (under News & Updates) ============ */
+const EVENTS = [
+  { team:"CCS Wizards",     title:"Wizards Watch Party",        img:"wizardsEvent.png",  desc:"CCS hosts a community watch party for their basketball opener, free popcorn and merch giveaways for anyone repping purple." },
+  { team:"NSG Pythons",     title:"Pythons Pep Rally",          img:"pythonsEvent.png",  desc:"NSG kicks off tournament week with a pep rally and a short fun run around the oval before their first game." },
+  { team:"ENG'G Warriors",  title:"Warriors Build Night",       img:"warriorsEvent.png", desc:"ENG'G's drumline leads a pre-game hype walk-in to the covered court the night before their opener." },
+  { team:"SBM Eagles",      title:"Eagles Alumni Homecoming",   img:"eaglesEvent.png",   desc:"SBM welcomes alumni back for a homecoming send-off ahead of their volleyball match." },
+];
+
+function renderEvents(){
+  document.getElementById('eventsGrid').innerHTML = EVENTS.map(ev => `
+    <div class="event-card">
+      <img class="event-card__photo" src="${ev.img}" alt="${ev.title}">
+      <div class="event-card__body">
+        <div class="event-card__source">${ev.team}</div>
+        <div class="event-card__title">${ev.title}</div>
+        <div class="event-card__desc">${ev.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ============ TABS ============ */
+function switchTab(tab){
   currentTab = tab;
   document.querySelectorAll('.nav-btn').forEach(b=> b.classList.toggle('active', b.dataset.tab === tab));
+  document.getElementById('mapView').hidden = tab !== 'map';
   document.getElementById('fixturesView').hidden = tab !== 'fixtures';
   document.getElementById('myScheduleView').hidden = tab !== 'my-schedule';
+  document.getElementById('newsView').hidden = tab !== 'news';
 }
 
 document.querySelectorAll('.nav-btn').forEach(btn=>{
@@ -291,8 +417,12 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
 document.getElementById('dateSelect').addEventListener('change', renderFixtures);
 document.getElementById('sportSelect').addEventListener('change', renderFixtures);
 
+/* ============ INIT ============ */
 populateFilterOptions();
 renderTeamStrip();
 renderFixtures();
 renderCalendar();
 renderDayDetail();
+renderNewsFilters();
+renderNews();
+renderEvents();

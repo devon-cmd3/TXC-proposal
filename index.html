@@ -24,39 +24,43 @@
       <button class="nav-btn" data-tab="map">Map</button>
       <button class="nav-btn active" data-tab="fixtures">Fixtures</button>
       <button class="nav-btn" data-tab="my-schedule">Calendar</button>
-      <button class="nav-btn" data-tab="news">News and Updates</button>
+      <button class="nav-btn" data-tab="news">News &amp; Updates</button>
     </nav>
   </header>
 
   <main class="container">
-    <section class="hero">
-      <div class="hero-card hero-card--navy">
-        <p class="hero-eyebrow">THE XAVIER CUP &middot; 2026</p>
-        <h1 class="hero-title">ONE CAMPUS<br>EVERY COLLEGE<br><span>ONE TROPHY</span></h1>
-        <p class="hero-copy">Every fixture of the season — where it is being played, when it kicks off, and how it finished. Tap the map to see what is happening at a venue, or search for a team.</p>
-        <div class="hero-stats">
-          <div class="stat-chip"><span class="stat-num">8</span><span class="stat-label">Teams</span></div>
-          <div class="stat-chip"><span class="stat-num">6</span><span class="stat-label">Sports</span></div>
-          <div class="stat-chip"><span class="stat-num">11</span><span class="stat-label">Days</span></div>
-        </div>
-      </div>
-      <div class="hero-card hero-card--lime">
-        <p class="hero-eyebrow hero-eyebrow--dark">UNIVERSITY-WIDE</p>
-        <h2 class="hero-title-dark">XAVIER<br>ATENEO<br>2026</h2>
-        <p class="hero-dates">Oct 10 &ndash; Oct 20, 2026</p>
-        <div class="hero-trophy" aria-hidden="true">🏆</div>
-      </div>
+    <section class="team-strip" id="teamStrip" aria-label="Teams">
+      <!-- Each chip renders an <img src="[team].jpg"> — see TEAMS[].img
+          in script.js for the exact filename per team. -->
     </section>
 
-    <section class="team-strip" id="teamStrip" aria-label="Teams">
-      <!-- Team photos are wired up in script.js via TEAMS[].img. A
-        portrait crop (roughly 3:4) fills each chip best, since there's no
-        name or code overlaid on top of the image anymore. -->
+    <section class="view" id="mapView" hidden>
+      <div class="hero">
+        <div class="hero-card hero-card--navy">
+          <p class="hero-eyebrow">THE XAVIER CUP &middot; 2026</p>
+          <h1 class="hero-title">ONE CAMPUS<br> EVERY COLLEGE<br><span> ONE TROPHY</span></h1>
+          <p class="hero-copy">Every fixture of the season, where it is being played, when it kicks off, and how it finished. Tap the map to see what is happening at a venue, or search for a team.</p>
+          <div class="hero-stats">
+            <div class="stat-chip"><span class="stat-num">8</span><span class="stat-label">Teams</span></div>
+            <div class="stat-chip"><span class="stat-num">6</span><span class="stat-label">Sports</span></div>
+            <div class="stat-chip"><span class="stat-num">11</span><span class="stat-label">Days</span></div>
+          </div>
+        </div>
+        <div class="hero-card hero-card--lime">
+          <p class="hero-eyebrow hero-eyebrow--dark">UNIVERSITY-WIDE</p>
+          <h2 class="hero-title-dark">XAVIER<br>ATENEO<br>2026</h2>
+          <p class="hero-dates">Oct 10 &ndash; Oct 20, 2026</p>
+          <div class="hero-trophy" aria-hidden="true">🏆</div>
+        </div>
+      </div>
     </section>
 
     <section class="view" id="fixturesView">
+      <div class="view-header">
+        <h2>All Fixtures</h2>
+        <p>Every match across the tournament, filterable by day and sport.</p>
+      </div>
       <div class="view-controls">
-        <h2 id="viewTitle">All Fixtures</h2>
         <div class="filter-group">
           <label for="dateSelect">Date</label>
           <select id="dateSelect">
@@ -72,8 +76,10 @@
     </section>
 
     <section class="view" id="myScheduleView" hidden>
-      <h2>College Schedule</h2>
-      <p class="section-lede">Pick your team above, then tap a day to see when they play.</p>
+      <div class="view-header">
+        <h2>My Schedule</h2>
+        <p>Pick your team above, then tap a day to see when they play.</p>
+      </div>
 
       <div class="calendar" id="calendar">
         <div class="calendar__head">
@@ -91,6 +97,28 @@
           <h3 id="dayDetailTitle">Select a team</h3>
         </div>
         <div id="dayDetailGames" class="fixtures-grid"></div>
+      </div>
+    </section>
+
+    <section class="view" id="newsView" hidden>
+      <div class="view-header">
+        <h2>News &amp; Updates</h2>
+        <p>Announcements and stories from every college and CSG.</p>
+      </div>
+
+      <div class="news-controls">
+        <div class="news-filters" id="newsFilters"></div>
+        <button class="news-see-all" id="newsSeeAll">See All</button>
+      </div>
+
+      <div class="news-carousel" id="newsCarousel">
+        <div class="news-track" id="newsTrack"></div>
+      </div>
+      <div class="news-grid" id="newsGrid" hidden></div>
+
+      <div class="events-section">
+        <h3 class="events-heading">Upcoming Events</h3>
+        <div class="events-grid" id="eventsGrid"></div>
       </div>
     </section>
 
