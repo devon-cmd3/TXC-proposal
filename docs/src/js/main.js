@@ -1,3 +1,4 @@
+import { CONFIG } from './config.js';
 import { TEAMS } from './data/teams.js';
 import { 
   SPORTS, 
@@ -21,11 +22,11 @@ function computeStatus(fx){
   return "ONGOING";
 }
 
-let currentTab = "fixtures";
-let savedTeam = localStorage.getItem("txcTeam") || "";
+let currentTab = CONFIG.DEFAULT_TAB;
+let savedTeam = localStorage.getItem(CONFIG.STORAGE_KEY) || "";
 let scheduleSelectedDate = TODAY;
-let calViewYear = 2026;
-let calViewMonth = 9; // October (0-indexed)
+let calViewYear = CONFIG.CALENDAR.YEAR;
+let calViewMonth = CONFIG.CALENDAR.MONTH;
 let newsFilter = "All";
 
 function renderCard(fx){
@@ -83,7 +84,7 @@ function highlightSelectedTeam(){
 
 function selectTeam(teamName){
   savedTeam = teamName;
-  localStorage.setItem('txcTeam', teamName);
+  localStorage.setItem(CONFIG.STORAGE_KEY, teamName);
   highlightSelectedTeam();
   renderCalendar();
   renderDayDetail();
@@ -207,7 +208,7 @@ function renderDayDetail(){
 let newsViewMode = "carousel";
 
 function renderNewsFilters(){
-  const sources = ["All", "CSG", ...TEAMS.map(t=>t.mascot)];
+  const sources = [...CONFIG.NEWS_EXTRA_FILTERS, ...TEAMS.map(t=>t.mascot)];
   const el = document.getElementById('newsFilters');
   el.innerHTML = sources.map(s=>
     `<button class="news-filter${s===newsFilter?' active':''}" data-source="${s}">${s}</button>`
@@ -349,3 +350,4 @@ renderNewsFilters();
 renderNews();
 renderEvents();
 updateNavPill();
+
