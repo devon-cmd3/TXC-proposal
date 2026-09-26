@@ -1,3 +1,7 @@
+import { CONFIG } from '../config.js';
+
+const p = (file) => `${CONFIG.ASSETS_PATH}/${file}`;
+
 export const EVENTS = [
   { team:"CCS Wizards",     title:"Wizard's Most Wanted",             img:"pictures/wizardsEvent.png",  desc:"CCS organization GDGC's Chief Technology Officer claims that the moon landing was fake." },
   { team:"NSG Pythons",     title:"Pythons VS Warriors",              img:"pictures/pythonsEvent.png",  desc:"NSG started the kick off and are completely on par with the undefeated ENG'G Warriors." },
