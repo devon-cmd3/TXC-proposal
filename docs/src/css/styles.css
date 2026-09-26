@@ -350,8 +350,16 @@ h1,h2,h3{ font-family:var(--font-display); }
 .site-footer__name{ font-family:var(--font-display); font-weight:700; color:var(--navy); font-size:14px; margin-bottom:4px; }
 
 @media (max-width:760px){
+  /* Most mobile browsers (iOS Safari especially) repaint a
+     background-attachment:fixed pattern on every scroll frame.
+     With the thin repeating-linear-gradient stripes used here,
+     that repaint shows up as flickering visual "noise" across the
+     page. Scrolling the background with the page avoids it. */
+  body{ background-attachment:scroll; }
+
   .hero{ grid-template-columns:1fr; }
-  .navbar{ padding:14px 18px; }
+  .navbar{ padding:14px 18px; flex-wrap:wrap; }
+  .nav-tabs{ width:100%; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch; }
   .container{ padding:22px 16px 0; }
   .card{ flex-direction:column; align-items:flex-start; }
   .score{ align-self:flex-end; }
@@ -359,3 +367,12 @@ h1,h2,h3{ font-family:var(--font-display); }
   .news-grid{ grid-template-columns:repeat(2, 1fr); }
   .events-grid{ grid-template-columns:1fr; }
 }
+
+@media (max-width:420px){
+  .team-strip{ grid-template-columns:repeat(3, 1fr); }
+  .news-grid{ grid-template-columns:1fr; }
+  .hero-card{ padding:24px; }
+  .hero-stats{ gap:8px; }
+  .stat-chip{ padding:8px 12px; }
+}
+
