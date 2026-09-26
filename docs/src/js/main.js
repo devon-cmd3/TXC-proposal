@@ -1,3 +1,4 @@
+import { TEAMS } from './data/teams.js';
 import { 
   SPORTS, 
   DATES, 
@@ -7,6 +8,8 @@ import {
   fixtures, 
   timeToMinutes 
 } from './data/fixtures.js';
+import { NEWS } from './data/news.js';
+import { EVENTS } from './data/events.js';
 
 
 function computeStatus(fx){
