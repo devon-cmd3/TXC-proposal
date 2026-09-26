@@ -1,4 +1,4 @@
-import { TEAMS ) from './teams.js';
+import { TEAMS } from './teams.js';
 
 export const SPORTS = ["Basketball", "Volleyball", "Football", "Badminton", "Esports", "Cheerdance"];
 const VENUES = ["Main Gym", "Covered Court 1", "Covered Court 2", "Main Field", "XU Hall", "Covered Court 3"];
