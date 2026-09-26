@@ -1,15 +1,16 @@
+import { TEAMS ) from './teams.js';
 
-const SPORTS = ["Basketball", "Volleyball", "Football", "Badminton", "Esports", "Cheerdance"];
+export const SPORTS = ["Basketball", "Volleyball", "Football", "Badminton", "Esports", "Cheerdance"];
 const VENUES = ["Main Gym", "Covered Court 1", "Covered Court 2", "Main Field", "XU Hall", "Covered Court 3"];
 const TIME_SLOTS = ["8:00 AM","9:30 AM","11:00 AM","1:00 PM","2:30 PM","3:30 PM","5:00 PM"];
 
-const DATES = ["2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14",
+export const DATES = ["2026-10-10","2026-10-11","2026-10-12","2026-10-13","2026-10-14",
               "2026-10-15","2026-10-16","2026-10-17","2026-10-18","2026-10-19","2026-10-20"];
-const TODAY = "2026-10-12";
-const NOW_MINUTES = 15*60 + 30; // 3:30 PM — the prototype's "current time"
-const GAME_DURATION_MIN = 90;
+export const TODAY = "2026-10-12";
+export const NOW_MINUTES = 15*60 + 30; // 3:30 PM — the prototype's "current time"
+export const GAME_DURATION_MIN = 90;
 
-function timeToMinutes(t){
+export function timeToMinutes(t){
   const [time, mer] = t.split(" ");
   let [h,m] = time.split(":").map(Number);
   if(mer === "PM" && h !== 12) h += 12;
@@ -36,7 +37,7 @@ function scoreFor(sport, rng){
 }
 
 let idCounter = 1;
-const fixtures = [];
+export const fixtures = [];
 DATES.forEach(date=>{
   const dayRng = mulberry32(seedFor(date));
   const isToday = date === TODAY;
