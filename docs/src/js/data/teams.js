@@ -1,3 +1,7 @@
+import { CONFIG } from '../config.js';
+
+const p = (file) => `${CONFIG.ASSETS_PATH}/${file}`;
+
 export const TEAMS = [
   { name: "NSG Pythons", mascot: "Pythons", img: "assets/pictures/pythons.png" },
   { name: "SBM Eagles", mascot: "Eagles", img: "assets/pictures/eagles.jpeg" },
