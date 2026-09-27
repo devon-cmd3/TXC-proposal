@@ -168,6 +168,7 @@ function renderDayDetail(){
 }
 
 /* ============ NEWS & UPDATES ============ */
+let newsExpanded = false;
 
 function newsCardHtml(item, featured = false){
   return `
@@ -182,13 +183,28 @@ function newsCardHtml(item, featured = false){
 
 function renderNews(){
   const feed = document.getElementById('newsFeed');
+  const seeAllWrap = document.querySelector('.news-see-all-wrap');
+  const seeAllBtn = document.getElementById('newsSeeAll');
+
   if(NEWS.length === 0){
     feed.innerHTML = `<div class="empty-state">No news yet.</div>`;
+    seeAllWrap.hidden = true;
     return;
   }
+
   const [featuredItem, ...rest] = NEWS;
-  feed.innerHTML = newsCardHtml(featuredItem, true) + rest.map(n => newsCardHtml(n)).join('');
+  const visibleRest = newsExpanded ? rest : rest.slice(0, CONFIG.NEWS_PREVIEW_COUNT - 1);
+  feed.innerHTML = newsCardHtml(featuredItem, true) + visibleRest.map(n => newsCardHtml(n)).join('');
+
+  const hasMore = rest.length > CONFIG.NEWS_PREVIEW_COUNT - 1;
+  seeAllWrap.hidden = !hasMore;
+  seeAllBtn.textContent = newsExpanded ? 'Show Less' : 'See All';
 }
+
+document.getElementById('newsSeeAll').addEventListener('click', ()=>{
+  newsExpanded = !newsExpanded;
+  renderNews();
+});
 
 /* ============ EVENTS (under News & Updates) ============ */
 
