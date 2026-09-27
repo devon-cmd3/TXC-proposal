@@ -182,23 +182,67 @@ function newsCardHtml(item, featured = false){
 }
 
 function renderNews(){
-  const feed = document.getElementById('newsFeed');
+  const featureSlot = document.getElementById('newsFeatureSlot');
+  const carousel = document.getElementById('newsCarousel');
+  const track = document.getElementById('newsTrack');
+  const grid = document.getElementById('newsGrid');
   const seeAllWrap = document.querySelector('.news-see-all-wrap');
   const seeAllBtn = document.getElementById('newsSeeAll');
 
   if(NEWS.length === 0){
-    feed.innerHTML = `<div class="empty-state">No news yet.</div>`;
+    featureSlot.innerHTML = `<div class="empty-state">No news yet.</div>`;
+    carousel.hidden = true;
+    grid.hidden = true;
     seeAllWrap.hidden = true;
     return;
   }
 
   const [featuredItem, ...rest] = NEWS;
-  const visibleRest = newsExpanded ? rest : rest.slice(0, CONFIG.NEWS_PREVIEW_COUNT - 1);
-  feed.innerHTML = newsCardHtml(featuredItem, true) + visibleRest.map(n => newsCardHtml(n)).join('');
+  featureSlot.innerHTML = newsCardHtml(featuredItem, true);
 
-  const hasMore = rest.length > CONFIG.NEWS_PREVIEW_COUNT - 1;
-  seeAllWrap.hidden = !hasMore;
-  seeAllBtn.textContent = newsExpanded ? 'Show Less' : 'See All';
+  seeAllWrap.hidden = rest.length === 0;
+  seeAllBtn.textContent = newsExpanded ? 'Back to Carousel' : 'See All';
+
+  if(newsExpanded){
+    carousel.hidden = true;
+    carousel.onscroll = null;
+    grid.hidden = false;
+    grid.innerHTML = rest.length
+      ? rest.map(n => newsCardHtml(n)).join('')
+      : `<div class="empty-state">No more stories yet.</div>`;
+    return;
+  }
+
+  grid.hidden = true;
+  if(rest.length === 0){
+    carousel.hidden = true;
+    return;
+  }
+  carousel.hidden = false;
+
+  const singleHtml = rest.map(n => newsCardHtml(n)).join('');
+  track.innerHTML = singleHtml;
+
+  requestAnimationFrame(()=>{
+    const overflowing = track.scrollWidth > carousel.clientWidth + 4;
+
+    if(!overflowing){
+      carousel.onscroll = null;
+      return;
+    }
+
+    track.innerHTML = singleHtml + singleHtml + singleHtml;
+    const singleSetWidth = track.scrollWidth / 3;
+    carousel.scrollLeft = singleSetWidth;
+
+    carousel.onscroll = ()=>{
+      if(carousel.scrollLeft <= 0){
+        carousel.scrollLeft += singleSetWidth;
+      } else if(carousel.scrollLeft >= singleSetWidth * 2){
+        carousel.scrollLeft -= singleSetWidth;
+      }
+    };
+  });
 }
 
 document.getElementById('newsSeeAll').addEventListener('click', ()=>{
