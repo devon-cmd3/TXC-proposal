@@ -357,6 +357,15 @@ h1,h2,h3{ font-family:var(--font-display); }
 .news-card--featured .news-card__snippet{ color:rgba(243,239,227,.8); font-size:14px; max-width:640px; }
 .news-card--featured .news-card__date{ color:rgba(243,239,227,.6); }
 
+.news-see-all-wrap{ display:flex; justify-content:center; margin-top:22px; }
+.news-see-all{
+  background:var(--lime); border:none; color:var(--navy);
+  font-family:var(--font-body); font-weight:700; font-size:13px;
+  padding:10px 26px; border-radius:var(--radius-pill); cursor:pointer;
+  transition:background .12s ease;
+}
+.news-see-all:hover{ background:var(--lime-deep); }
+
 
 .events-section{ margin-top:34px; }
 .events-heading{ font-size:18px; margin-bottom:14px; }
