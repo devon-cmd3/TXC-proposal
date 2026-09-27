@@ -256,7 +256,9 @@ document.getElementById('newsSeeAll').addEventListener('click', ()=>{
 function renderEvents(){
   document.getElementById('eventsGrid').innerHTML = EVENTS.map(ev => `
     <div class="event-card">
-      <img class="event-card__photo" src="${ev.img}" alt="${ev.title}">
+      <div class="event-card__photo-wrap">
+        <img class="event-card__photo" src="${ev.img}" alt="${ev.title}">
+      </div>
       <div class="event-card__body">
         <div class="event-card__source">${ev.team}</div>
         <div class="event-card__title">${ev.title}</div>
