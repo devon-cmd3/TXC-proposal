@@ -23,4 +23,8 @@ export const CONFIG = {
     YEAR: 2026,
     MONTH: 9, // 0-indexed -> October
   },
+
+  // How many story cards show on News & Updates before "See All"
+  // reveals the rest. Includes the featured card.
+  NEWS_PREVIEW_COUNT: 6,
 };
