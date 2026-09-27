@@ -16,7 +16,6 @@ let savedTeam = localStorage.getItem(CONFIG.STORAGE_KEY) || "";
 let scheduleSelectedDate = TODAY;
 let calViewYear = CONFIG.CALENDAR.YEAR;
 let calViewMonth = CONFIG.CALENDAR.MONTH;
-let newsFilter = "All";
 
 function teamChipHtml(team){
   const selected = team.name === savedTeam ? " selected" : "";
@@ -169,94 +168,27 @@ function renderDayDetail(){
 }
 
 /* ============ NEWS & UPDATES ============ */
-let newsViewMode = "carousel";
 
-function renderNewsFilters(){
-  const sources = [...CONFIG.NEWS_EXTRA_FILTERS, ...TEAMS.map(t=>t.mascot)];
-  const el = document.getElementById('newsFilters');
-  el.innerHTML = sources.map(s=>
-    `<button class="news-filter${s===newsFilter?' active':''}" data-source="${s}">${s}</button>`
-  ).join('');
-  el.querySelectorAll('.news-filter').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      newsFilter = btn.dataset.source;
-      renderNewsFilters();
-      renderNews();
-    });
-  });
-}
-
-function newsCardHtml(item){
+function newsCardHtml(item, featured = false){
   return `
-    <div class="news-card">
+    <div class="news-card${featured ? ' news-card--featured' : ''}">
+      <span class="news-card__tag">${item.source}</span>
       <div class="news-card__title">${item.title}</div>
       <div class="news-card__snippet">${item.snippet}</div>
-      <div class="news-card__foot">
-        <span class="news-card__date">${item.date}</span>
-        <!-- TODO: point this at the org's Facebook page once it's live -->
-        <button class="news-card__more" type="button">See More</button>
-      </div>
+      <span class="news-card__date">${item.date}</span>
     </div>
   `;
 }
 
 function renderNews(){
-  const filtered = newsFilter === "All" ? NEWS : NEWS.filter(n => n.source === newsFilter);
-  const carousel = document.getElementById('newsCarousel');
-  const grid = document.getElementById('newsGrid');
-  const track = document.getElementById('newsTrack');
-  const seeAllBtn = document.getElementById('newsSeeAll');
-
-  seeAllBtn.classList.toggle('active', newsViewMode === 'grid');
-  seeAllBtn.textContent = newsViewMode === 'grid' ? 'Back to Carousel' : 'See All';
-
-  if(newsViewMode === 'grid'){
-    carousel.hidden = true;
-    grid.hidden = false;
-    grid.innerHTML = filtered.length
-      ? filtered.map(newsCardHtml).join('')
-      : `<div class="empty-state">No news for this filter yet.</div>`;
+  const feed = document.getElementById('newsFeed');
+  if(NEWS.length === 0){
+    feed.innerHTML = `<div class="empty-state">No news yet.</div>`;
     return;
   }
-
-  carousel.hidden = false;
-  grid.hidden = true;
-
-  if(filtered.length === 0){
-    carousel.onscroll = null;
-    track.innerHTML = `<div class="empty-state">No news for this filter yet.</div>`;
-    return;
-  }
-
-  const singleHtml = filtered.map(newsCardHtml).join('');
-  track.innerHTML = singleHtml;
-
-  requestAnimationFrame(()=>{
-    const overflowing = track.scrollWidth > carousel.clientWidth + 4;
-
-    if(!overflowing){
-      carousel.onscroll = null;
-      return;
-    }
-
-    track.innerHTML = singleHtml + singleHtml + singleHtml;
-    const singleSetWidth = track.scrollWidth / 3;
-    carousel.scrollLeft = singleSetWidth;
-
-    carousel.onscroll = ()=>{
-      if(carousel.scrollLeft <= 0){
-        carousel.scrollLeft += singleSetWidth;
-      } else if(carousel.scrollLeft >= singleSetWidth * 2){
-        carousel.scrollLeft -= singleSetWidth;
-      }
-    };
-  });
+  const [featuredItem, ...rest] = NEWS;
+  feed.innerHTML = newsCardHtml(featuredItem, true) + rest.map(n => newsCardHtml(n)).join('');
 }
-
-document.getElementById('newsSeeAll').addEventListener('click', ()=>{
-  newsViewMode = newsViewMode === 'grid' ? 'carousel' : 'grid';
-  renderNews();
-});
 
 /* ============ EVENTS (under News & Updates) ============ */
 
@@ -311,7 +243,6 @@ renderTeamStrip();
 renderFixtures();
 renderCalendar();
 renderDayDetail();
-renderNewsFilters();
 renderNews();
 renderEvents();
 updateNavPill();
