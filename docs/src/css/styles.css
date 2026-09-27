@@ -55,60 +55,15 @@ h1,h2,h3{ font-family:var(--font-display); }
   font-size:10px; font-weight:700; text-align:center;
 }
 
-/* Map & Banner Styles */
-.map-responsive-container {
-  position: relative;
-  width: 100%;
-  height: 450px;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-  border: 4px solid var(--white);
-  background: var(--cream-card);
-  margin-top: 24px;
+.map-placeholder-note{
+  margin-top:22px; min-height:340px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+  background:repeating-linear-gradient(135deg, rgba(16,27,69,.06) 0 8px, rgba(16,27,69,0) 8px 16px), var(--cream-card);
+  border:2px dashed var(--navy); border-radius:var(--radius-lg);
+  color:var(--navy); text-align:center; padding:30px;
 }
-
-.map-responsive-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-.college-banners-wrapper {
-  overflow: hidden;
-  white-space: nowrap;
-  position: relative;
-  width: 100%;
-  margin: 10px 0 24px;
-  -webkit-mask-image: linear-gradient(to right, transparent, black 40px, black calc(100% - 40px), transparent);
-  mask-image: linear-gradient(to right, transparent, black 40px, black calc(100% - 40px), transparent);
-}
-
-.marquee-track {
-  display: inline-flex;
-  gap: 16px;
-  animation: scrollMarquee 35s linear infinite;
-}
-
-.marquee-track:hover {
-  animation-play-state: paused;
-}
-
-.banner-img {
-  height: 120px;
-  width: auto;
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
-  object-fit: cover;
-}
-
-@keyframes scrollMarquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-50% - 8px)); }
-}
+.map-placeholder-note strong{ font-family:var(--font-display); font-size:16px; letter-spacing:.5px; }
+.map-placeholder-note span{ font-size:13px; color:var(--muted); max-width:380px; }
 
 .navbar{
   display:flex; align-items:center; justify-content:space-between;
@@ -172,6 +127,8 @@ h1,h2,h3{ font-family:var(--font-display); }
 .hero-title-dark{ font-size:clamp(26px,3.4vw,34px); font-weight:700; line-height:1.02; letter-spacing:-.5px; margin-bottom:10px; text-transform:uppercase; }
 .hero-dates{ font-size:13px; font-weight:600; margin-bottom:auto; }
 .hero-trophy{ font-size:72px; text-align:center; margin:14px 0; filter:drop-shadow(0 8px 14px rgba(16,27,69,.25)); }
+.hero-venues{ display:flex; gap:8px; flex-wrap:wrap; }
+.venue-pill{ background:var(--navy); color:var(--white); font-size:11px; font-weight:700; padding:6px 12px; border-radius:var(--radius-pill); }
 
 .team-strip{
   display:grid; grid-template-columns:repeat(8, 1fr);
@@ -276,6 +233,7 @@ h1,h2,h3{ font-family:var(--font-display); }
 }
 
 /* Match Fixture Card Structure */
+.fixtures-grid { display: flex; flex-direction: column; gap: 10px; }
 .fixture-wrapper {
   margin-bottom: 28px;
   display: flex;
@@ -481,29 +439,13 @@ h1,h2,h3{ font-family:var(--font-display); }
   .navbar{ padding:14px 18px; flex-wrap:wrap; }
   .nav-tabs{ width:100%; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch; }
   .container{ padding:22px 16px 0; }
-  
-  .team-strip { 
-    display: flex; 
-    overflow-x: auto; 
-    scroll-snap-type: x mandatory; 
-    padding-bottom: 12px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .team-strip::-webkit-scrollbar { display: none; }
-  .team-chip {
-    flex: 0 0 calc(28% - 10px);
-    scroll-snap-align: start;
-  }
-
+  .team-strip{ grid-template-columns:repeat(4, 1fr); gap:8px; }
   .news-grid{ grid-template-columns:repeat(2, 1fr); }
   .events-grid{ grid-template-columns:1fr; }
-  
-  .banner-img { height: 90px; }
-  .map-responsive-container { height: 350px; }
 }
 
-@media (max-width:420px) {
+@media (max-width:420px){
+  .team-strip{ grid-template-columns:repeat(3, 1fr); }
   .news-grid{ grid-template-columns:1fr; }
   .hero-card{ padding:24px; }
   .hero-stats{ gap:8px; }
