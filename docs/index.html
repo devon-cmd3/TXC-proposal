@@ -63,20 +63,30 @@
         <p>Every match across the tournament, filterable by day and sport.</p>
       </div>
       <section class="team-strip" id="teamStripFixtures" aria-label="Teams"></section>
-      
-      <!-- Top Section Bar -->
-      <div class="fixture-header-bar">
-        <h3>Match Fixtures</h3>
+
+      <div class="featured-match" id="featuredMatch">
+        <div class="featured-match__topbar">Featured Match</div>
+        <div class="featured-match__pagination">
+          <button id="featuredPrevDay" type="button" aria-label="Previous day">&#8249;</button>
+          <span class="featured-match__date" id="featuredDateLabel"></span>
+          <button id="featuredNextDay" type="button" aria-label="Next day">&#8250;</button>
+        </div>
+        <div class="featured-match__card-wrap" id="featuredCardSlot"></div>
       </div>
 
-      <!-- Date Pagination Bar -->
-      <div class="date-pagination">
-        <button id="prevDateBtn" aria-label="Previous Day">❮</button>
-        <span id="currentDateDisplay">Oct 10, 2026</span>
-        <button id="nextDateBtn" aria-label="Next Day">❯</button>
+      <div class="view-controls">
+        <div class="filter-group">
+          <label for="dateSelect">Date</label>
+          <select id="dateSelect">
+            <option value="ALL">All Days (Oct 10&ndash;20)</option>
+          </select>
+          <label for="sportSelect">Sport</label>
+          <select id="sportSelect">
+            <option value="ALL">All Sports</option>
+          </select>
+        </div>
       </div>
 
-      <!-- Main Card Container -->
       <div id="fixturesContainer" class="fixtures-grid"></div>
     </section>
 
