@@ -9,6 +9,7 @@
  * fills with the CSG Facebook Page's latest posts. Until that has
  * run (or if it's empty), the placeholders in news.js show instead.
  */
+import { CONFIG } from '../config.js';
 import { NEWS } from './news.js';
 import { EVENTS } from './events.js';
 
@@ -35,16 +36,14 @@ async function loadNews(){
 }
 
 function newsCardHtml(item, featured = false){
-  const link = /^https:\/\//.test(item.url ?? '')
-    ? `<a class="news-card__link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">View on Facebook</a>`
-    : '';
+  const url = /^https:\/\//.test(item.url ?? '') ? item.url : CONFIG.CSG_FACEBOOK_URL;
   return `
     <div class="news-card${featured ? ' news-card--featured' : ''}">
       <span class="news-card__tag">${escapeHtml(item.source)}</span>
       <div class="news-card__title">${escapeHtml(item.title)}</div>
       <div class="news-card__snippet">${escapeHtml(item.snippet)}</div>
       <span class="news-card__date">${escapeHtml(item.date)}</span>
-      ${link}
+      <a class="news-card__link" href="${escapeHtml(url)}" target="_blank" rel="noopener">View on Facebook</a>
     </div>
   `;
 }
