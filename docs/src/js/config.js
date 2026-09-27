@@ -23,8 +23,4 @@ export const CONFIG = {
     YEAR: 2026,
     MONTH: 9, // 0-indexed -> October
   },
-
-  // Extra filter chips shown before the per-team mascot filters on
-  // the News & Updates tab.
-  NEWS_EXTRA_FILTERS: ["All", "CSG"],
 };
