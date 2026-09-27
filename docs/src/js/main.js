@@ -4,23 +4,11 @@ import {
   SPORTS, 
   DATES, 
   TODAY, 
-  NOW_MINUTES, 
-  GAME_DURATION_MIN, 
-  fixtures, 
-  timeToMinutes 
+  fixtures 
 } from './data/fixtures.js';
 import { NEWS } from './data/news.js';
 import { EVENTS } from './data/events.js';
-
-
-function computeStatus(fx){
-  if(fx.date < TODAY) return "FINISHED";
-  if(fx.date > TODAY) return "UPCOMING";
-  const start = timeToMinutes(fx.time);
-  if(NOW_MINUTES < start) return "UPCOMING";
-  if(NOW_MINUTES >= start + GAME_DURATION_MIN) return "FINISHED";
-  return "ONGOING";
-}
+import { computeStatus, renderCard } from './components/matchCard.js';
 
 let currentTab = CONFIG.DEFAULT_TAB;
 let savedTeam = localStorage.getItem(CONFIG.STORAGE_KEY) || "";
@@ -28,32 +16,6 @@ let scheduleSelectedDate = TODAY;
 let calViewYear = CONFIG.CALENDAR.YEAR;
 let calViewMonth = CONFIG.CALENDAR.MONTH;
 let newsFilter = "All";
-
-function renderCard(fx){
-  const status = computeStatus(fx);
-  const statusClass = status.toLowerCase();
-  const isMine = fx.teamA === savedTeam || fx.teamB === savedTeam;
-  const teamAHtml = fx.teamA === savedTeam ? `<span class="team-mine">${fx.teamA}</span>` : fx.teamA;
-  const teamBHtml = fx.teamB === savedTeam ? `<span class="team-mine">${fx.teamB}</span>` : fx.teamB;
-
-  // Only a FINISHED game gets a score element — ONGOING and UPCOMING
-  // are fully described by the badge, so nothing duplicates it here.
-  const scoreHtml = status === "FINISHED" ? `<div class="score">${fx.finalScore}</div>` : '';
-
-  return `
-    <div class="card ${statusClass}${isMine ? ' mine' : ''}">
-      <div class="match-info">
-        <div class="sport-name">${fx.sport} &bull; ${fx.date}</div>
-        <div class="teams">${teamAHtml}&nbsp;vs&nbsp;${teamBHtml}</div>
-        <div class="time-venue">📍 ${fx.venue} &nbsp;|&nbsp; ${fx.time}</div>
-      </div>
-      <div>
-        <span class="badge ${statusClass}">${status === "ONGOING" ? "ON GOING" : status}</span>
-        ${scoreHtml}
-      </div>
-    </div>
-  `;
-}
 
 function teamChipHtml(team){
   const selected = team.name === savedTeam ? " selected" : "";
@@ -116,7 +78,7 @@ function renderFixtures(){
   );
   const container = document.getElementById('fixturesContainer');
   container.innerHTML = filtered.length
-    ? filtered.map(renderCard).join('')
+    ? filtered.map(fx => renderCard(fx, savedTeam)).join('')
     : `<div class="empty-state">No games found for the selected filters.</div>`;
 }
 
@@ -200,7 +162,7 @@ function renderDayDetail(){
 
   const games = fixtures.filter(fx => fx.date === scheduleSelectedDate && (fx.teamA === savedTeam || fx.teamB === savedTeam));
   gamesEl.innerHTML = games.length
-    ? games.map(renderCard).join('')
+    ? games.map(fx => renderCard(fx, savedTeam)).join('')
     : `<div class="empty-state">No games for ${savedTeam} on this day.</div>`;
 }
 
