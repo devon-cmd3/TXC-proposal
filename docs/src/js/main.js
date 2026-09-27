@@ -9,6 +9,7 @@ import {
 import { NEWS } from './data/news.js';
 import { EVENTS } from './data/events.js';
 import { computeStatus, renderCard } from './components/matchCard.js';
+import { initFeaturedMatch } from './components/featuredMatch.js';
 
 let currentTab = CONFIG.DEFAULT_TAB;
 let savedTeam = localStorage.getItem(CONFIG.STORAGE_KEY) || "";
@@ -51,6 +52,7 @@ function selectTeam(teamName){
   renderCalendar();
   renderDayDetail();
   renderFixtures();
+  featuredMatch.render(savedTeam);
 }
 
 function populateFilterOptions(){
@@ -303,6 +305,7 @@ document.getElementById('dateSelect').addEventListener('change', renderFixtures)
 document.getElementById('sportSelect').addEventListener('change', renderFixtures);
 
 /* ============ INIT ============ */
+const featuredMatch = initFeaturedMatch();
 populateFilterOptions();
 renderTeamStrip();
 renderFixtures();
@@ -312,4 +315,5 @@ renderNewsFilters();
 renderNews();
 renderEvents();
 updateNavPill();
+featuredMatch.render(savedTeam);
 
