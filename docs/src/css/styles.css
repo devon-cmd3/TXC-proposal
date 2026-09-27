@@ -191,34 +191,87 @@ h1,h2,h3{ font-family:var(--font-display); }
 }
 
 .fixtures-grid{ display:flex; flex-direction:column; gap:10px; }
-.card{
-  background:var(--white); border-radius:var(--radius); padding:16px 20px;
-  display:flex; justify-content:space-between; align-items:center; gap:16px;
-  border-left:5px solid var(--border); box-shadow:var(--shadow-sm); flex-wrap:wrap;
-}
-.card.finished{ border-left-color:var(--navy); }
-.card.ongoing{ border-left-color:var(--green); }
-.card.upcoming{ border-left-color:var(--muted); }
-.card.mine{ border-left-color:var(--lime-deep); }
 
-.badge{
-  font-size:10.5px; font-weight:700; padding:4px 10px; border-radius:var(--radius-pill);
-  text-transform:uppercase; letter-spacing:.4px; display:inline-block;
+/* ============ Match Fixture Card ============
+   Structure: a floating sport/mode tag anchored to the top edge of
+   the card, a 3-column grid (home team / score+time / away team),
+   and a muted status line below the card. See matchCard.js. */
+.fixture-card-wrap{ position:relative; }
+
+.fixture-card__tag{
+  position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+  background:var(--navy); color:var(--lime);
+  font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.5px;
+  padding:5px 14px; border-radius:var(--radius-pill); white-space:nowrap; z-index:1;
 }
-.badge.finished{ background:var(--navy); color:var(--white); }
-.badge.ongoing{ background:var(--green-soft); color:var(--green); animation:pulse 1.3s infinite; }
-.badge.upcoming{ background:var(--cream-card); color:var(--navy); border:1px solid var(--border); }
+
+.fixture-card{
+  background:var(--white); border-radius:var(--radius);
+  padding:26px 20px 18px; box-shadow:var(--shadow-sm);
+  display:grid; grid-template-columns:1fr 1.2fr 1fr; align-items:center; column-gap:10px;
+}
+.fixture-card-wrap.mine .fixture-card{ box-shadow:0 0 0 2px var(--lime-deep), var(--shadow-sm); }
+
+.fixture-card__team{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+.fixture-card__team--home{ align-items:flex-start; text-align:left; }
+.fixture-card__team--away{ align-items:flex-end; text-align:right; }
+.fixture-card__team-name{ font-size:14.5px; font-weight:700; color:var(--ink); }
+.fixture-card__team-name.team-mine{ color:var(--lime-deep); }
+.fixture-card__team-sub{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+
+.fixture-card__center{ display:flex; flex-direction:column; align-items:center; gap:5px; }
+.fixture-card__score-row{ display:flex; align-items:baseline; gap:9px; }
+.fixture-card__score{ font-family:var(--font-display); font-weight:700; font-size:21px; color:var(--navy); }
+.fixture-card__vs{ font-size:10.5px; font-weight:700; color:var(--muted); letter-spacing:.5px; }
+.fixture-card__time{ font-size:11.5px; color:var(--muted); }
+
+.fixture-card__footer{ text-align:center; margin-top:8px; font-size:12px; color:var(--muted); }
+.fixture-card-wrap.finished .fixture-card__footer{ color:var(--navy); font-weight:600; }
+.fixture-card-wrap.ongoing .fixture-card__footer{ color:var(--green); font-weight:600; animation:pulse 1.3s infinite; }
 @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.55;} }
 
-.match-info{ flex:1 1 220px; }
-.sport-name{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; font-weight:700; margin-bottom:4px; }
-.teams{ font-size:15px; font-weight:700; }
-.teams .team-mine{ color:var(--lime-deep); }
-.time-venue{ font-size:12.5px; color:var(--muted); margin-top:4px; }
-
-.score{ font-family:var(--font-display); font-weight:700; font-size:19px; color:var(--navy); white-space:nowrap; }
-
 .empty-state{ text-align:center; padding:36px 20px; background:var(--white); border-radius:var(--radius); color:var(--muted); border:1px dashed var(--border); font-size:13.5px; }
+
+/* ============ FEATURED MATCH (date-paginated highlight) ============
+   New chrome around the Match Fixture Card component above — a top
+   section bar and a date pagination row sit above one reused card. */
+.featured-match{ margin-bottom:26px; }
+
+.featured-match__topbar{
+  background:var(--navy); color:var(--lime);
+  font-family:var(--font-display); font-weight:700; font-size:13px;
+  text-transform:uppercase; letter-spacing:.08em; text-align:center;
+  padding:10px 16px;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+
+.featured-match__pagination{
+  display:flex; align-items:center; justify-content:center; gap:18px;
+  background:var(--cream-card);
+  border-left:1px solid var(--border); border-right:1px solid var(--border);
+  padding:10px 16px;
+}
+.featured-match__pagination button{
+  width:28px; height:28px; border-radius:50%; border:none; background:none;
+  font-size:18px; line-height:1; color:var(--navy); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.featured-match__pagination button:hover:not(:disabled){ background:rgba(16,27,69,.08); }
+.featured-match__pagination button:disabled{ opacity:.3; cursor:default; }
+.featured-match__date{
+  font-family:var(--font-display); font-weight:700; font-size:14px; min-width:160px; text-align:center;
+}
+
+/* Pure spacer/background: gives the floating .fixture-card__tag
+   (which pokes up above the card's own top edge) room to clear the
+   pagination bar above it, and squares off the bottom corners. */
+.featured-match__card-wrap{
+  padding:24px 16px 16px;
+  background:var(--cream-card);
+  border:1px solid var(--border); border-top:none;
+  border-radius:0 0 var(--radius) var(--radius);
+}
+
 
 .calendar{
   background:var(--navy); border-radius:var(--radius-lg); overflow:hidden;
@@ -361,8 +414,9 @@ h1,h2,h3{ font-family:var(--font-display); }
   .navbar{ padding:14px 18px; flex-wrap:wrap; }
   .nav-tabs{ width:100%; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch; }
   .container{ padding:22px 16px 0; }
-  .card{ flex-direction:column; align-items:flex-start; }
-  .score{ align-self:flex-end; }
+  .fixture-card{ padding:24px 14px 16px; column-gap:6px; }
+  .fixture-card__team-name{ font-size:13px; }
+  .fixture-card__score{ font-size:18px; }
   .team-strip{ grid-template-columns:repeat(4, 1fr); gap:8px; }
   .news-grid{ grid-template-columns:repeat(2, 1fr); }
   .events-grid{ grid-template-columns:1fr; }
@@ -374,5 +428,10 @@ h1,h2,h3{ font-family:var(--font-display); }
   .hero-card{ padding:24px; }
   .hero-stats{ gap:8px; }
   .stat-chip{ padding:8px 12px; }
+  .fixture-card{ grid-template-columns:1fr 1fr 1fr; column-gap:4px; padding:22px 10px 14px; }
+  .fixture-card__team-name{ font-size:11.5px; }
+  .fixture-card__team-sub{ font-size:9.5px; }
+  .fixture-card__score{ font-size:16px; }
+  .fixture-card__score-row{ gap:5px; }
 }
 
