@@ -1,12 +1,26 @@
 /**
- * Match card component
+ * Match Fixture Card component
  * ------------------------------------------------------------
- * Everything about turning one fixture into a "score card":
+ * Everything about turning one fixture into a score card:
  * working out whether it's finished/ongoing/upcoming, and
- * building the HTML for it. Used by both the Fixtures tab and
- * the My Schedule day detail.
+ * building the HTML for it. Used by the Fixtures tab, the
+ * My Schedule day detail, and the Featured Match widget.
+ *
+ * Layout (see styles.css "Match Fixture Card" section):
+ *   - a floating tag on the card's top edge showing the sport
+ *   - a 3-column grid: home team | score — VS — score + time | away team
+ *   - a muted status line below the card (status + venue + date)
  */
 import { TODAY, NOW_MINUTES, GAME_DURATION_MIN, timeToMinutes } from '../data/fixtures.js';
+import { TEAMS } from '../data/teams.js';
+
+const MASCOT_BY_TEAM = Object.fromEntries(TEAMS.map(t => [t.name, t.mascot]));
+
+const STATUS_LABEL = {
+  FINISHED: "Finished",
+  ONGOING: "Live now",
+  UPCOMING: "Upcoming",
+};
 
 export function computeStatus(fx){
   if(fx.date < TODAY) return "FINISHED";
@@ -15,6 +29,17 @@ export function computeStatus(fx){
   if(NOW_MINUTES < start) return "UPCOMING";
   if(NOW_MINUTES >= start + GAME_DURATION_MIN) return "FINISHED";
   return "ONGOING";
+}
+
+function teamColumnHtml(teamName, savedTeam, side){
+  const isMine = teamName === savedTeam;
+  const mascot = MASCOT_BY_TEAM[teamName];
+  return `
+    <div class="fixture-card__team fixture-card__team--${side}">
+      <span class="fixture-card__team-name${isMine ? ' team-mine' : ''}">${teamName}</span>
+      ${mascot ? `<span class="fixture-card__team-sub">${mascot}</span>` : ''}
+    </div>
+  `;
 }
 
 /**
@@ -27,25 +52,30 @@ export function renderCard(fx, savedTeam = ""){
   const status = computeStatus(fx);
   const statusClass = status.toLowerCase();
   const isMine = fx.teamA === savedTeam || fx.teamB === savedTeam;
-  const teamAHtml = fx.teamA === savedTeam ? `<span class="team-mine">${fx.teamA}</span>` : fx.teamA;
-  const teamBHtml = fx.teamB === savedTeam ? `<span class="team-mine">${fx.teamB}</span>` : fx.teamB;
 
-  // Only a FINISHED game gets a score element — ONGOING and UPCOMING
-  // are fully described by the badge, so nothing duplicates it here.
-  const scoreHtml = status === "FINISHED" ? `<div class="score">${fx.finalScore}</div>` : '';
+  // The dataset pre-generates a finalScore for every fixture (so results
+  // are consistent), but only a FINISHED game should reveal it — showing
+  // it early would spoil an ongoing/upcoming match.
+  const [scoreA, scoreB] = status === "FINISHED" ? fx.finalScore.split(" - ") : ["–", "–"];
+
+  const shortDate = fx.date.slice(5).replace('-', '/');
 
   return `
-    <div class="card ${statusClass}${isMine ? ' mine' : ''}">
-      <div class="match-info">
-        <div class="sport-name">${fx.sport} &bull; ${fx.date}</div>
-        <div class="teams">${teamAHtml}&nbsp;vs&nbsp;${teamBHtml}</div>
-        <div class="time-venue">📍 ${fx.venue} &nbsp;|&nbsp; ${fx.time}</div>
+    <div class="fixture-card-wrap ${statusClass}${isMine ? ' mine' : ''}">
+      <div class="fixture-card__tag">${fx.sport}</div>
+      <div class="fixture-card">
+        ${teamColumnHtml(fx.teamA, savedTeam, 'home')}
+        <div class="fixture-card__center">
+          <div class="fixture-card__score-row">
+            <span class="fixture-card__score">${scoreA}</span>
+            <span class="fixture-card__vs">VS</span>
+            <span class="fixture-card__score">${scoreB}</span>
+          </div>
+          <span class="fixture-card__time">${fx.time}</span>
+        </div>
+        ${teamColumnHtml(fx.teamB, savedTeam, 'away')}
       </div>
-      <div>
-        <span class="badge ${statusClass}">${status === "ONGOING" ? "ON GOING" : status}</span>
-        ${scoreHtml}
-      </div>
+      <div class="fixture-card__footer">${STATUS_LABEL[status]} &middot; 📍 ${fx.venue} &middot; ${shortDate}</div>
     </div>
   `;
 }
-
