@@ -135,14 +135,20 @@ h1,h2,h3{ font-family:var(--font-display); }
   gap:10px; padding:4px 2px 20px; width:100%;
 }
 .team-chip{
+  position:relative;
   border-radius:var(--radius-sm); overflow:hidden;
   cursor:pointer; display:block;
-  aspect-ratio:3/4;
   transition:transform .12s ease, box-shadow .12s ease;
 }
+/* Locks each chip to a 3:4 portrait shape without relying on the
+   CSS aspect-ratio property, which some in-app/embedded browsers
+   (Messenger, Instagram, older WebViews) render inconsistently.
+   This padding-top trick works identically everywhere. */
+.team-chip::before{ content:""; display:block; padding-top:133.333%; }
 .team-chip:hover{ transform:translateY(-2px); box-shadow:var(--shadow-sm); }
 .team-chip.selected{ box-shadow:0 0 0 3px var(--lime), var(--shadow-md); }
 .team-chip__photo{
+  position:absolute; top:0; left:0;
   width:100%; height:100%; object-fit:cover; display:block;
 }
 
@@ -387,8 +393,11 @@ h1,h2,h3{ font-family:var(--font-display); }
   background:var(--white); border-radius:var(--radius); overflow:hidden;
   box-shadow:var(--shadow-sm); display:flex; flex-direction:column;
 }
+.event-card__photo-wrap{ position:relative; }
+.event-card__photo-wrap::before{ content:""; display:block; padding-top:75%; }
 .event-card__photo{
-  width:100%; aspect-ratio:4/3; object-fit:cover; display:block;
+  position:absolute; top:0; left:0;
+  width:100%; height:100%; object-fit:cover; display:block;
   background:var(--cream-card);
 }
 .event-card__body{ padding:14px 16px; }
