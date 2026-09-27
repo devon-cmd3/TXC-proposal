@@ -328,11 +328,10 @@ h1,h2,h3{ font-family:var(--font-display); }
 .day-detail__head h3{ font-size:16px; }
 
 /* ============ News & Updates ============
-   A featured story card followed by a grid of story cards —
-   no filters, no carousel toggle. See main.js renderNews(). */
-.news-feed{
-  display:grid; grid-template-columns:repeat(3, 1fr); gap:18px;
-}
+   A featured story card up top, then a scrolling carousel of the
+   rest of the stories by default. "See All" swaps the carousel for
+   a full grid of everything. See main.js renderNews(). */
+.news-feature-slot{ margin-bottom:0; }
 
 .news-card{
   background:var(--white); border-radius:var(--radius); box-shadow:var(--shadow-sm);
@@ -348,7 +347,6 @@ h1,h2,h3{ font-family:var(--font-display); }
 .news-card__date{ font-size:11px; color:var(--muted); margin-top:auto; padding-top:6px; }
 
 .news-card--featured{
-  grid-column:1 / -1;
   background:var(--navy); color:var(--white);
   padding:32px; gap:12px;
 }
@@ -356,6 +354,22 @@ h1,h2,h3{ font-family:var(--font-display); }
 .news-card--featured .news-card__title{ font-size:24px; }
 .news-card--featured .news-card__snippet{ color:rgba(243,239,227,.8); font-size:14px; max-width:640px; }
 .news-card--featured .news-card__date{ color:rgba(243,239,227,.6); }
+
+.news-carousel{
+  display:flex; gap:16px; overflow-x:auto; overflow-y:hidden;
+  padding-bottom:4px; scrollbar-width:none; margin-top:22px;
+  -webkit-mask-image:linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+  mask-image:linear-gradient(to right, transparent, black 32px, black calc(100% - 32px), transparent);
+}
+.news-carousel::-webkit-scrollbar{ display:none; }
+.news-carousel[hidden]{ display:none; }
+.news-track{ display:flex; gap:16px; width:max-content; }
+.news-track .news-card{ flex:0 0 auto; width:270px; }
+
+.news-grid{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:22px;
+}
+.news-grid[hidden]{ display:none; }
 
 .news-see-all-wrap{ display:flex; justify-content:center; margin-top:22px; }
 .news-see-all{
@@ -365,7 +379,6 @@ h1,h2,h3{ font-family:var(--font-display); }
   transition:background .12s ease;
 }
 .news-see-all:hover{ background:var(--lime-deep); }
-
 
 .events-section{ margin-top:34px; }
 .events-heading{ font-size:18px; margin-bottom:14px; }
@@ -402,7 +415,7 @@ h1,h2,h3{ font-family:var(--font-display); }
   .fixture-card__team-name{ font-size:13px; }
   .fixture-card__score{ font-size:18px; }
   .team-strip{ grid-template-columns:repeat(4, 1fr); gap:8px; }
-  .news-feed{ grid-template-columns:repeat(2, 1fr); }
+  .news-grid{ grid-template-columns:repeat(2, 1fr); }
   .news-card--featured{ padding:24px; }
   .news-card--featured .news-card__title{ font-size:20px; }
   .events-grid{ grid-template-columns:1fr; }
@@ -410,7 +423,7 @@ h1,h2,h3{ font-family:var(--font-display); }
 
 @media (max-width:420px){
   .team-strip{ grid-template-columns:repeat(3, 1fr); }
-  .news-feed{ grid-template-columns:1fr; }
+  .news-grid{ grid-template-columns:1fr; }
   .hero-card{ padding:24px; }
   .hero-stats{ gap:8px; }
   .stat-chip{ padding:8px 12px; }
