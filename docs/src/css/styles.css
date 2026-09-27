@@ -336,7 +336,7 @@ h1,h2,h3{ font-family:var(--font-display); }
 /* ============ News & Updates ============
    A featured story card up top, then a scrolling carousel of the
    rest of the stories by default. "See All" swaps the carousel for
-   a full grid of everything. See main.js renderNews(). */
+   a full grid of everything. See news/newsSection.js renderNews(). */
 .news-feature-slot{ margin-bottom:0; }
 
 .news-card{
@@ -360,6 +360,17 @@ h1,h2,h3{ font-family:var(--font-display); }
 .news-card--featured .news-card__title{ font-size:24px; }
 .news-card--featured .news-card__snippet{ color:rgba(243,239,227,.8); font-size:14px; max-width:640px; }
 .news-card--featured .news-card__date{ color:rgba(243,239,227,.6); }
+
+.news-card__link{
+  align-self:flex-start; margin-top:4px;
+  background:var(--navy); color:var(--white); text-decoration:none;
+  font-size:12px; font-weight:700;
+  padding:8px 16px; border-radius:var(--radius-pill);
+  transition:background .12s ease;
+}
+.news-card__link:hover{ background:var(--navy-deep); }
+.news-card--featured .news-card__link{ background:var(--lime); color:var(--navy); }
+.news-card--featured .news-card__link:hover{ background:var(--lime-deep); }
 
 .news-carousel{
   display:flex; gap:16px; overflow-x:auto; overflow-y:hidden;

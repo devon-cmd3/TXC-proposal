@@ -2,21 +2,49 @@
  * News & Updates section
  * ------------------------------------------------------------
  * Everything under the "News & Updates" tab: the featured story,
- * the looping carousel / "See All" grid for the rest of NEWS, and
- * the Upcoming Events cards. main.js only needs to call initNews().
+ * the looping carousel / "See All" grid for the rest of the news,
+ * and the Upcoming Events cards. main.js only needs to call initNews().
+ *
+ * News comes from posts.json, which scripts/fetch-facebook-posts.mjs
+ * fills with the CSG Facebook Page's latest posts. Until that has
+ * run (or if it's empty), the placeholders in news.js show instead.
  */
 import { NEWS } from './news.js';
 import { EVENTS } from './events.js';
 
+const POSTS_URL = new URL('./posts.json', import.meta.url);
+
+let newsItems = NEWS;
 let newsExpanded = false;
 
+// Post text comes from Facebook, so never drop it into innerHTML as-is.
+function escapeHtml(value){
+  return String(value ?? '').replace(/[&<>"']/g, ch => (
+    { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]
+  ));
+}
+
+async function loadNews(){
+  try{
+    const res = await fetch(POSTS_URL, { cache:'no-cache' });
+    const posts = res.ok ? await res.json() : [];
+    return Array.isArray(posts) && posts.length ? posts : NEWS;
+  }catch{
+    return NEWS;
+  }
+}
+
 function newsCardHtml(item, featured = false){
+  const link = /^https:\/\//.test(item.url ?? '')
+    ? `<a class="news-card__link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">View on Facebook</a>`
+    : '';
   return `
     <div class="news-card${featured ? ' news-card--featured' : ''}">
-      <span class="news-card__tag">${item.source}</span>
-      <div class="news-card__title">${item.title}</div>
-      <div class="news-card__snippet">${item.snippet}</div>
-      <span class="news-card__date">${item.date}</span>
+      <span class="news-card__tag">${escapeHtml(item.source)}</span>
+      <div class="news-card__title">${escapeHtml(item.title)}</div>
+      <div class="news-card__snippet">${escapeHtml(item.snippet)}</div>
+      <span class="news-card__date">${escapeHtml(item.date)}</span>
+      ${link}
     </div>
   `;
 }
@@ -29,7 +57,7 @@ function renderNews(){
   const seeAllWrap = document.querySelector('.news-see-all-wrap');
   const seeAllBtn = document.getElementById('newsSeeAll');
 
-  if(NEWS.length === 0){
+  if(newsItems.length === 0){
     featureSlot.innerHTML = `<div class="empty-state">No news yet.</div>`;
     carousel.hidden = true;
     grid.hidden = true;
@@ -37,7 +65,7 @@ function renderNews(){
     return;
   }
 
-  const [featuredItem, ...rest] = NEWS;
+  const [featuredItem, ...rest] = newsItems;
   featureSlot.innerHTML = newsCardHtml(featuredItem, true);
 
   seeAllWrap.hidden = rest.length === 0;
@@ -100,12 +128,13 @@ function renderEvents(){
   `).join('');
 }
 
-export function initNews(){
+export async function initNews(){
   document.getElementById('newsSeeAll').addEventListener('click', ()=>{
     newsExpanded = !newsExpanded;
     renderNews();
   });
 
-  renderNews();
   renderEvents();
+  newsItems = await loadNews();
+  renderNews();
 }
