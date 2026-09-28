@@ -12,8 +12,9 @@
 import { writeFile } from 'node:fs/promises';
 
 const GRAPH_VERSION = 'v26.0';
-// CSG Facebook Page ("Campuss Compass TEST" for now). Swap the ID when the real page is ready.
-const PAGE_ID = process.env.FB_PAGE_ID || '61595123270779';
+// CSG Facebook Page ("Campuss Compass TEST" for now). This is the Graph API Page ID from
+// the Page's About > Page transparency, not the number in its profile.php web address.
+const PAGE_ID = process.env.FB_PAGE_ID || '1301081723094199';
 const POST_COUNT = 6; // 1 featured + 5 in the grid
 const OUT_FILE = new URL('../docs/src/js/news/posts.json', import.meta.url);
 
