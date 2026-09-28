@@ -18,7 +18,8 @@ const PAGE_ID = process.env.FB_PAGE_ID || '1301081723094199';
 const POST_COUNT = 6; // 1 featured + 5 in the grid
 const OUT_FILE = new URL('../docs/src/js/news/posts.json', import.meta.url);
 
-const token = process.env.FB_PAGE_TOKEN;
+// Trim so a stray space or newline pasted into the secret doesn't break the token.
+const token = process.env.FB_PAGE_TOKEN?.trim();
 if(!token){
   // Skip instead of failing so the hourly run doesn't send failure emails before setup.
   console.log('::warning::FB_PAGE_TOKEN is not set. Add it under Settings > Secrets and variables > Actions.');
@@ -60,7 +61,9 @@ const res = await fetch(url);
 const body = await res.json();
 if(!res.ok){
   // Graph API error messages never include the token, so this is safe to log.
-  console.error(`Graph API error ${res.status}: ${body.error?.message ?? 'unknown error'}`);
+  // The code/subcode pair tells expired (190/463), revoked (190/460) and malformed tokens apart.
+  const { message = 'unknown error', code, error_subcode } = body.error ?? {};
+  console.error(`Graph API error ${res.status} (code ${code ?? '-'}/${error_subcode ?? '-'}): ${message}`);
   process.exit(1);
 }
 
