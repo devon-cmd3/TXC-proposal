@@ -75,7 +75,13 @@ export function renderCard(fx, savedTeam = ""){
         </div>
         ${teamColumnHtml(fx.teamB, savedTeam, 'away')}
       </div>
-      <div class="fixture-card__footer">${STATUS_LABEL[status]} &middot; 📍 ${fx.venue} &middot; ${shortDate}</div>
+      <div class="fixture-card__footer">
+        <span>${STATUS_LABEL[status]}</span>
+        <span class="fixture-card__footer-sep" aria-hidden="true">&middot;</span>
+        <span>📍 ${fx.venue}</span>
+        <span class="fixture-card__footer-sep" aria-hidden="true">&middot;</span>
+        <span>${shortDate}</span>
+      </div>
     </div>
   `;
 }

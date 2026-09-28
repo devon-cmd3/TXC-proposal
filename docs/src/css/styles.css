@@ -196,7 +196,9 @@ h1,h2,h3{ font-family:var(--font-display); }
   background:var(--white); font-family:var(--font-body); font-size:13px; color:var(--ink);
 }
 
-.fixtures-grid{ display:flex; flex-direction:column; gap:10px; }
+/* Extra gap so each card's status line clears the next card's
+   floating sport tag (which pokes 13px above its card). */
+.fixtures-grid{ display:flex; flex-direction:column; gap:34px; }
 
 /* ============ Match Fixture Card ============
    Structure: a floating sport/mode tag anchored to the top edge of
@@ -231,7 +233,11 @@ h1,h2,h3{ font-family:var(--font-display); }
 .fixture-card__vs{ font-size:10.5px; font-weight:700; color:var(--muted); letter-spacing:.5px; }
 .fixture-card__time{ font-size:11.5px; color:var(--muted); }
 
-.fixture-card__footer{ text-align:center; margin-top:8px; font-size:12px; color:var(--muted); }
+.fixture-card__footer{
+  display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 10px;
+  margin-top:12px; font-size:12px; color:var(--muted);
+}
+.fixture-card__footer-sep{ opacity:.45; }
 .fixture-card-wrap.finished .fixture-card__footer{ color:var(--navy); font-weight:600; }
 .fixture-card-wrap.ongoing .fixture-card__footer{ color:var(--green); font-weight:600; animation:pulse 1.3s infinite; }
 @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.55;} }
