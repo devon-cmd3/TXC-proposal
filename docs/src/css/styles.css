@@ -137,6 +137,7 @@ h1,h2,h3{ font-family:var(--font-display); }
 .team-chip{
   position:relative;
   border-radius:var(--radius-sm); overflow:hidden;
+  background:var(--white); box-shadow:var(--shadow-sm);
   cursor:pointer; display:block;
   transition:transform .12s ease, box-shadow .12s ease;
 }
@@ -145,11 +146,14 @@ h1,h2,h3{ font-family:var(--font-display); }
    (Messenger, Instagram, older WebViews) render inconsistently.
    This padding-top trick works identically everywhere. */
 .team-chip::before{ content:""; display:block; padding-top:133.333%; }
-.team-chip:hover{ transform:translateY(-2px); box-shadow:var(--shadow-sm); }
+.team-chip:hover{ transform:translateY(-2px); box-shadow:var(--shadow-md); }
 .team-chip.selected{ box-shadow:0 0 0 3px var(--lime), var(--shadow-md); }
+/* Team sprites (assets/pictures/teamLogos) have transparent
+   backgrounds and mixed shapes, so fit the whole sprite inside the
+   card with a small margin rather than cropping it to fill. */
 .team-chip__photo{
-  position:absolute; top:0; left:0;
-  width:100%; height:100%; object-fit:cover; display:block;
+  position:absolute; top:8%; left:8%;
+  width:84%; height:84%; object-fit:contain; display:block;
 }
 
 .view[hidden]{ display:none; }
