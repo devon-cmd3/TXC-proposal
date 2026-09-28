@@ -1,0 +1,48 @@
+/* ============================================================
+   Base: reset, page background, and small shared bits used by
+   several sections.
+   ============================================================ */
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+/* Anything with the `hidden` attribute stays hidden, even if a class
+   gives it display:flex/grid. The JS hides tabs, the news carousel,
+   the news grid and the "See All" button this way. */
+[hidden]{ display:none !important; }
+
+body{
+  font-family:var(--font-body);
+  background-color:var(--cream);
+  background-image:
+    repeating-linear-gradient(45deg, rgba(16,27,69,0.05) 0px, rgba(16,27,69,0.05) 2px, transparent 2px, transparent 46px),
+    repeating-linear-gradient(135deg,
+      var(--cream) 0px, var(--cream) 120px,
+      #ECE4CE 120px, #ECE4CE 160px,
+      var(--lime) 160px, var(--lime) 168px,
+      #ECE4CE 168px, #ECE4CE 208px,
+      var(--cream) 208px, var(--cream) 328px
+    );
+  background-attachment:fixed;
+  color:var(--ink);
+  line-height:1.5;
+  padding-bottom:40px;
+}
+
+a{ color:inherit; text-decoration:none; }
+h1,h2,h3{ font-family:var(--font-display); }
+
+/* Shown in place of a list that has nothing in it. */
+.empty-state{ text-align:center; padding:36px 20px; background:var(--white); border-radius:var(--radius); color:var(--muted); border:1px dashed var(--border); font-size:13.5px; }
+
+/* Gentle blink for anything live (match status line, calendar pills). */
+@keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.55;} }
+
+
+/* ---------- Tablets & phones (≤760px) ---------- */
+@media (max-width:760px){
+  /* Most mobile browsers (iOS Safari especially) repaint a
+     background-attachment:fixed pattern on every scroll frame.
+     With the thin repeating-linear-gradient stripes used here,
+     that repaint shows up as flickering visual "noise" across the
+     page. Scrolling the background with the page avoids it. */
+  body{ background-attachment:scroll; }
+}

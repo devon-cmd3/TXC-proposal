@@ -1,0 +1,40 @@
+/* ============================================================
+   Top bar: logo + the Map / Fixtures / Calendar / News tabs.
+   The navy pill behind the active tab is moved by js/navTabs.js.
+   ============================================================ */
+.navbar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px; padding:16px 32px; background:var(--white);
+  border-bottom:1px solid var(--border); flex-wrap:wrap;
+}
+.brand{ display:flex; align-items:center; gap:10px; }
+.brand__mark{ width:26px; height:26px; color:var(--navy); }
+.brand__text{
+  font-family:var(--font-display); font-weight:700; font-size:14px;
+  letter-spacing:.2px; color:var(--navy);
+}
+
+.nav-tabs{ position:relative; display:flex; gap:6px; flex-wrap:wrap; }
+.nav-pill{
+  position:absolute; top:0; left:0; height:100%; width:0;
+  background:var(--navy); border-radius:var(--radius-pill);
+  box-shadow:0 0 0 3px rgba(214,255,63,.25), 0 0 16px 2px rgba(214,255,63,.55);
+  transition:left .28s cubic-bezier(.4,0,.2,1), width .28s cubic-bezier(.4,0,.2,1);
+  z-index:1;
+}
+.nav-btn{
+  position:relative; z-index:2;
+  background:transparent; border:1px solid transparent; color:var(--muted);
+  padding:9px 16px; border-radius:var(--radius-pill); cursor:pointer;
+  font-family:var(--font-body); font-weight:600; font-size:13.5px;
+  transition:color .15s ease;
+}
+.nav-btn:hover{ color:var(--navy); }
+.nav-btn.active{ color:var(--lime); }
+
+
+/* ---------- Tablets & phones (≤760px) ---------- */
+@media (max-width:760px){
+  .navbar{ padding:14px 18px; flex-wrap:wrap; }
+  .nav-tabs{ width:100%; overflow-x:auto; flex-wrap:nowrap; -webkit-overflow-scrolling:touch; }
+}

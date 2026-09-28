@@ -1,33 +1,39 @@
 /**
- * News & Updates section
+ * News & Updates tab
  * ------------------------------------------------------------
- * Everything under the "News & Updates" tab: the featured story,
- * the looping carousel / "See All" grid for the rest of the news,
- * and the Upcoming Events cards. main.js only needs to call initNews().
+ * The newest story as a big featured card, the rest in a looping
+ * carousel ("See All" swaps it for a grid), and the Upcoming Events
+ * cards underneath.
  *
- * News comes from posts.json, which scripts/fetch-facebook-posts.mjs
- * fills with the CSG Facebook Page's latest posts. Until that has
- * run (or if it's empty), the placeholders in news.js show instead.
+ * Where the content comes from (all in this folder):
+ *   posts.json  latest posts from the CSG Facebook Page. Rewritten
+ *               hourly by .github/workflows/facebook-news.yml, so
+ *               don't edit it by hand.
+ *   news.js     placeholder stories, shown only while posts.json is empty
+ *   events.js   the Upcoming Events cards
+ *
+ * Markup: #newsView in index.html
+ * Styles: css/sections/news.css
  */
-import { CONFIG } from '../config.js';
+import { CONFIG } from '../../config.js';
 import { NEWS } from './news.js';
 import { EVENTS } from './events.js';
 
 const POSTS_URL = new URL('./posts.json', import.meta.url);
 
 let newsItems = NEWS;
-let newsExpanded = false;
+let showAll = false; // true while "See All" has swapped the carousel for the grid
 
 // Post text comes from Facebook, so never drop it into innerHTML as-is.
 function escapeHtml(value){
   return String(value ?? '').replace(/[&<>"']/g, ch => (
-    { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]
   ));
 }
 
 async function loadNews(){
   try{
-    const res = await fetch(POSTS_URL, { cache:'no-cache' });
+    const res = await fetch(POSTS_URL, { cache: 'no-cache' });
     const posts = res.ok ? await res.json() : [];
     return Array.isArray(posts) && posts.length ? posts : NEWS;
   }catch{
@@ -36,6 +42,7 @@ async function loadNews(){
 }
 
 function newsCardHtml(item, featured = false){
+  // Real posts link to themselves; placeholders fall back to the Page.
   const url = /^https:\/\//.test(item.url ?? '') ? item.url : CONFIG.CSG_FACEBOOK_URL;
   return `
     <div class="news-card${featured ? ' news-card--featured' : ''}">
@@ -68,14 +75,14 @@ function renderNews(){
   featureSlot.innerHTML = newsCardHtml(featuredItem, true);
 
   seeAllWrap.hidden = rest.length === 0;
-  seeAllBtn.textContent = newsExpanded ? 'Back to Carousel' : 'See All';
+  seeAllBtn.textContent = showAll ? 'Back to Carousel' : 'See All';
 
-  if(newsExpanded){
+  if(showAll){
     carousel.hidden = true;
     carousel.onscroll = null;
     grid.hidden = false;
     grid.innerHTML = rest.length
-      ? rest.map(n => newsCardHtml(n)).join('')
+      ? rest.map(item => newsCardHtml(item)).join('')
       : `<div class="empty-state">No more stories yet.</div>`;
     return;
   }
@@ -87,29 +94,35 @@ function renderNews(){
   }
   carousel.hidden = false;
 
-  const singleHtml = rest.map(n => newsCardHtml(n)).join('');
-  track.innerHTML = singleHtml;
+  const cardsHtml = rest.map(item => newsCardHtml(item)).join('');
+  track.innerHTML = cardsHtml;
+  requestAnimationFrame(() => loopCarouselIfOverflowing(carousel, track, cardsHtml));
+}
 
-  requestAnimationFrame(()=>{
-    const overflowing = track.scrollWidth > carousel.clientWidth + 4;
+/**
+ * Endless carousel: if the cards don't all fit, lay out three copies
+ * and start in the middle one. Whenever scrolling reaches either end,
+ * jump back by one copy's width; the content there is identical, so
+ * the jump is invisible and the carousel never runs out.
+ */
+function loopCarouselIfOverflowing(carousel, track, cardsHtml){
+  const overflowing = track.scrollWidth > carousel.clientWidth + 4;
+  if(!overflowing){
+    carousel.onscroll = null;
+    return;
+  }
 
-    if(!overflowing){
-      carousel.onscroll = null;
-      return;
+  track.innerHTML = cardsHtml + cardsHtml + cardsHtml;
+  const oneCopyWidth = track.scrollWidth / 3;
+  carousel.scrollLeft = oneCopyWidth;
+
+  carousel.onscroll = () => {
+    if(carousel.scrollLeft <= 0){
+      carousel.scrollLeft += oneCopyWidth;
+    } else if(carousel.scrollLeft >= oneCopyWidth * 2){
+      carousel.scrollLeft -= oneCopyWidth;
     }
-
-    track.innerHTML = singleHtml + singleHtml + singleHtml;
-    const singleSetWidth = track.scrollWidth / 3;
-    carousel.scrollLeft = singleSetWidth;
-
-    carousel.onscroll = ()=>{
-      if(carousel.scrollLeft <= 0){
-        carousel.scrollLeft += singleSetWidth;
-      } else if(carousel.scrollLeft >= singleSetWidth * 2){
-        carousel.scrollLeft -= singleSetWidth;
-      }
-    };
-  });
+  };
 }
 
 function renderEvents(){
@@ -127,9 +140,9 @@ function renderEvents(){
   `).join('');
 }
 
-export async function initNews(){
-  document.getElementById('newsSeeAll').addEventListener('click', ()=>{
-    newsExpanded = !newsExpanded;
+export async function initNewsSection(){
+  document.getElementById('newsSeeAll').addEventListener('click', () => {
+    showAll = !showAll;
     renderNews();
   });
 

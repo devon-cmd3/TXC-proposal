@@ -1,0 +1,42 @@
+/* ============================================================
+   Team picker: the row of college logos on the Fixtures and
+   Calendar tabs. Built by js/components/teamStrip.js.
+   ============================================================ */
+.team-strip{
+  display:grid; grid-template-columns:repeat(8, 1fr);
+  gap:10px; padding:4px 2px 20px; width:100%;
+}
+.team-chip{
+  position:relative;
+  border-radius:var(--radius-sm); overflow:hidden;
+  background:var(--white); box-shadow:var(--shadow-sm);
+  cursor:pointer; display:block;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+/* Locks each chip to a 3:4 portrait shape without relying on the
+   CSS aspect-ratio property, which some in-app/embedded browsers
+   (Messenger, Instagram, older WebViews) render inconsistently.
+   This padding-top trick works identically everywhere. */
+.team-chip::before{ content:""; display:block; padding-top:133.333%; }
+.team-chip:hover{ transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.team-chip.selected{ box-shadow:0 0 0 3px var(--lime), var(--shadow-md); }
+/* Team sprites (assets/pictures/teamLogos) have transparent
+   backgrounds and mixed shapes, so fit the whole sprite inside the
+   card with a small margin rather than cropping it to fill. */
+.team-chip__photo{
+  position:absolute; top:8%; left:8%;
+  width:84%; height:84%; object-fit:contain; display:block;
+}
+
+
+/* ---------- Tablets & phones (≤760px) ---------- */
+@media (max-width:760px){
+  /* All eight colleges stay on one row, just smaller. */
+  .team-strip{ gap:6px; padding-bottom:16px; }
+}
+
+/* ---------- Small phones (≤420px) ---------- */
+@media (max-width:420px){
+  .team-strip{ gap:4px; }
+  .team-chip{ border-radius:6px; }
+}

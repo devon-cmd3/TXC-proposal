@@ -1,0 +1,43 @@
+/* ============================================================
+   Page frame: the centred content column, the navy header banner
+   at the top of each tab (.view-header), and the footer.
+   ============================================================ */
+.container{ max-width:1100px; margin:0 auto; padding:28px 24px 0; }
+
+/* Navy banner with the big lime title, e.g. "ALL FIXTURES". */
+.view-header{
+  position:relative; overflow:hidden;
+  background:linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
+  border-radius:var(--radius-lg);
+  padding:34px 34px 30px; margin-bottom:22px;
+}
+.view-header::before{
+  content:""; position:absolute; top:-60%; right:-6%;
+  width:180px; height:260%; background:var(--lime); opacity:.14;
+  transform:rotate(20deg);
+}
+.view-header::after{
+  content:""; position:absolute; left:0; bottom:0; width:100%; height:4px;
+  background:linear-gradient(90deg, var(--lime) 0%, transparent 70%);
+}
+.view-header__icon{
+  position:absolute; top:18px; right:22px; width:64px; height:64px;
+  color:var(--white); opacity:.14; pointer-events:none;
+}
+.view-header h2{
+  position:relative; color:var(--lime); font-size:30px; font-weight:700;
+  text-transform:uppercase; letter-spacing:.5px;
+}
+.view-header p{
+  position:relative; color:rgba(243,239,227,.8); font-size:13.5px;
+  margin-top:8px; max-width:520px;
+}
+
+.site-footer{ text-align:center; padding:40px 20px 10px; color:var(--muted); font-size:12.5px; }
+.site-footer__name{ font-family:var(--font-display); font-weight:700; color:var(--navy); font-size:14px; margin-bottom:4px; }
+
+
+/* ---------- Tablets & phones (≤760px) ---------- */
+@media (max-width:760px){
+  .container{ padding:22px 16px 0; }
+}

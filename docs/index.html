@@ -10,6 +10,7 @@
 </head>
 <body>
 
+  <!-- ===== TOP BAR: logo + tabs (css/layout/navbar.css, js/navTabs.js) ===== -->
   <header class="navbar">
     <div class="brand">
       <span class="brand__mark" aria-hidden="true">
@@ -30,6 +31,7 @@
   </header>
 
   <main class="container">
+    <!-- ===== MAP TAB (css/sections/map.css) ===== -->
     <section class="view" id="mapView">
       <div class="hero">
         <div class="hero-card hero-card--navy">
@@ -50,18 +52,21 @@
         </div>
       </div>
 
+      <!-- TODO: replace this placeholder with the interactive campus map -->
       <div class="map-placeholder-note" id="campusMapSlot">
         <strong>MAP GOES HERE</strong>
         <span>Interactive campus map placeholder &mdash; venue pins, filters, etc.</span>
       </div>
     </section>
 
+    <!-- ===== FIXTURES TAB (js/sections/fixtures/, css/sections/fixtures.css) ===== -->
     <section class="view" id="fixturesView" hidden>
       <div class="view-header">
         <svg class="view-header__icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="18" y="14" width="64" height="72" rx="6" fill="none" stroke="currentColor" stroke-width="5"/><path d="M30 34h40M30 50h40M30 66h26" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
         <h2>All Fixtures</h2>
         <p>Every match across the tournament, filterable by day and sport.</p>
       </div>
+      <!-- filled with college logos by js/components/teamStrip.js -->
       <section class="team-strip" id="teamStripFixtures" aria-label="Teams"></section>
 
       <div class="featured-match" id="featuredMatch">
@@ -87,9 +92,11 @@
         </div>
       </div>
 
+      <!-- match cards are rendered here by fixturesSection.js -->
       <div id="fixturesContainer" class="fixtures-grid"></div>
     </section>
 
+    <!-- ===== CALENDAR TAB (js/sections/calendar/, css/sections/calendar.css) ===== -->
     <section class="view" id="myScheduleView" hidden>
       <div class="view-header">
         <svg class="view-header__icon" viewBox="0 0 100 100" aria-hidden="true"><rect x="14" y="20" width="72" height="66" rx="6" fill="none" stroke="currentColor" stroke-width="5"/><path d="M14 38h72M30 12v16M70 12v16" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
@@ -117,6 +124,7 @@
       </div>
     </section>
 
+    <!-- ===== NEWS & UPDATES TAB (js/sections/news/, css/sections/news.css) ===== -->
     <section class="view" id="newsView" hidden>
       <div class="view-header">
         <svg class="view-header__icon" viewBox="0 0 100 100" aria-hidden="true"><path d="M20 30h44l16-14v68l-16-14H20a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/><circle cx="34" cy="50" r="4" fill="currentColor"/><path d="M46 44h20M46 56h14" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg>
@@ -141,11 +149,13 @@
     </section>
   </main>
 
+  <!-- ===== FOOTER (css/layout/page.css) ===== -->
   <footer class="site-footer">
     <p class="site-footer__name">Created By: Google Developer Group · Xavier Ateneo</p>
     <p class="footer-sub">Built for The Xavier Cup · University-wide Season</p>
   </footer>
 
-<script type="module" src="src/js/main.js"></script>
+  <!-- All JavaScript starts from main.js (ES modules, no build step) -->
+  <script type="module" src="src/js/main.js"></script>
 </body>
 </html>

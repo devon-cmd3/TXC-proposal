@@ -1,17 +1,17 @@
 /**
- * Featured Match widget
+ * Featured Match box (top of the Fixtures tab)
  * ------------------------------------------------------------
- * The chrome that sits above the Fixtures list: a top section
- * bar, a "< date >" pagination row, and — reusing the existing
- * Match Fixture Card component from matchCard.js — one featured
- * game for whichever day is selected.
+ * A "< date >" pager and one highlighted game for that day, drawn
+ * with the shared match card. It shows the day's live game if there
+ * is one, otherwise the earliest game.
  *
- * Picks the day's most notable game (an ongoing one if there is
- * one, otherwise the earliest) rather than requiring a second
- * level of pagination within a day.
+ * Markup: #featuredMatch in index.html
+ * Styles: css/sections/fixtures.css
  */
-import { DATES, TODAY, fixtures } from '../data/fixtures.js';
-import { computeStatus, renderCard } from './matchCard.js';
+import { CONFIG } from '../../config.js';
+import { DATES, fixtures } from '../../data/fixtures.js';
+import { computeStatus, renderCard } from '../../components/matchCard.js';
+import { formatDayLabel } from '../../utils/dates.js';
 
 function pickFeaturedFixture(date){
   const dayFixtures = fixtures.filter(fx => fx.date === date);
@@ -20,12 +20,11 @@ function pickFeaturedFixture(date){
   return ongoing || dayFixtures[0];
 }
 
-function formatDate(dateStr){
-  return new Date(dateStr + "T00:00:00").toLocaleDateString('en-US', {
-    weekday: 'short', month: 'short', day: 'numeric',
-  });
-}
-
+/**
+ * Wires up the pager buttons and returns { render(savedTeam) }.
+ * Call render() whenever the chosen team changes so its games are
+ * highlighted on the card.
+ */
 export function initFeaturedMatch(){
   const dateLabel = document.getElementById('featuredDateLabel');
   const cardSlot = document.getElementById('featuredCardSlot');
@@ -36,12 +35,12 @@ export function initFeaturedMatch(){
     return { render(){} };
   }
 
-  let dayIndex = Math.max(0, DATES.indexOf(TODAY));
+  let dayIndex = Math.max(0, DATES.indexOf(CONFIG.TODAY));
   let lastSavedTeam = "";
 
   function renderInternal(){
     const date = DATES[dayIndex];
-    dateLabel.textContent = formatDate(date);
+    dateLabel.textContent = formatDayLabel(date);
     prevBtn.disabled = dayIndex === 0;
     nextBtn.disabled = dayIndex === DATES.length - 1;
 
@@ -65,4 +64,3 @@ export function initFeaturedMatch(){
     },
   };
 }
-

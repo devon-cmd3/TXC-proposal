@@ -1,0 +1,81 @@
+/* ============================================================
+   Calendar tab (#myScheduleView): the month grid and the
+   day-detail list under it. Built by
+   js/sections/calendar/calendarSection.js.
+   ============================================================ */
+.calendar{
+  background:var(--navy); border-radius:var(--radius-lg); overflow:hidden;
+  margin-bottom:22px; box-shadow:var(--shadow-md);
+}
+
+/* "October 2026 ....... [Today]" */
+.calendar__head{
+  display:flex; align-items:center; gap:12px; padding:16px 20px 10px;
+}
+.calendar__head h3{
+  color:var(--lime); font-size:18px; font-weight:700; margin-right:auto;
+}
+.calendar__today-btn{
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.2); color:var(--white);
+  font-size:12px; font-weight:600; padding:6px 14px; border-radius:var(--radius-pill); cursor:pointer;
+}
+.calendar__today-btn:hover{ background:rgba(255,255,255,.16); }
+
+/* minmax(0,1fr) keeps all 7 columns equal: plain 1fr lets a column
+   grow to fit its longest nowrap game pill, which pushed the grid
+   past the calendar's edge on phones. Weekdays share the grid's
+   zero side padding so the day names line up with their columns. */
+.calendar__weekdays{
+  display:grid; grid-template-columns:repeat(7, minmax(0,1fr));
+  padding:6px 0; border-top:1px solid rgba(255,255,255,.08);
+}
+.calendar__weekdays span{
+  text-align:center; font-size:11px; font-weight:600; letter-spacing:.5px;
+  color:rgba(255,255,255,.55); text-transform:uppercase; padding:6px 0;
+}
+
+/* ---------- Day cells ---------- */
+.calendar__grid{ display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); }
+.cal-cell{
+  min-width:0;
+  min-height:88px; border-top:1px solid rgba(255,255,255,.08); border-left:1px solid rgba(255,255,255,.08);
+  padding:6px 6px 8px; cursor:pointer; transition:background .12s ease;
+}
+.cal-cell:nth-child(7n+1){ border-left:none; }
+.cal-cell:hover{ background:rgba(255,255,255,.04); }
+.cal-cell.out-of-month{ cursor:default; }
+.cal-cell.out-of-month .cal-cell__num{ color:rgba(255,255,255,.22); }
+.cal-cell.selected{ background:rgba(214,255,63,.10); }
+.cal-cell__num{
+  font-family:var(--font-display); font-weight:700; font-size:13px; color:var(--lime);
+}
+.cal-cell.is-today .cal-cell__num{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; border-radius:50%; background:var(--lime); color:var(--navy);
+}
+
+/* One pill per game, coloured by status */
+.cal-pills{ margin-top:6px; display:flex; flex-direction:column; gap:3px; }
+.cal-pill{
+  font-size:10px; font-weight:600; padding:3px 6px; border-radius:5px;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.cal-pill.finished{ background:var(--cream); color:var(--navy); }
+.cal-pill.ongoing{ background:var(--lime); color:var(--navy); animation:pulse 1.3s infinite; }
+.cal-pill.upcoming{ background:transparent; border:1px solid rgba(214,255,63,.6); color:var(--lime); }
+
+/* ---------- Day detail (games for the tapped day) ---------- */
+.day-detail__head{ margin-bottom:28px; } /* clears the first card's floating sport tag */
+.day-detail__head h3{ font-size:16px; }
+
+
+/* ---------- Phones (≤560px) ---------- */
+@media (max-width:560px){
+  /* Calendar columns are ~45px wide here, too narrow for text pills.
+     Show one dot per game instead (cream = finished, lime = live,
+     outline = upcoming); tapping the day lists its games below. */
+  .calendar__head{ padding:14px 14px 8px; }
+  .cal-cell{ min-height:54px; padding:6px 3px; text-align:center; }
+  .cal-pills{ flex-direction:row; flex-wrap:wrap; justify-content:center; gap:3px; margin-top:5px; }
+  .cal-pill{ width:7px; height:7px; padding:0; border-radius:50%; font-size:0; }
+}

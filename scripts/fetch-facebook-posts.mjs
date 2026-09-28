@@ -2,8 +2,8 @@
  * Fetch CSG Facebook posts
  * ------------------------------------------------------------
  * Pulls the latest posts from the CSG Facebook Page through the
- * Graph API and writes them to docs/src/js/news/posts.json, which
- * the News & Updates tab reads. The newest post becomes the
+ * Graph API and writes them to docs/src/js/sections/news/posts.json,
+ * which the News & Updates tab reads. The newest post becomes the
  * featured story; the next five fill the carousel / grid.
  *
  * Run by .github/workflows/facebook-news.yml. The Page access token
@@ -16,7 +16,7 @@ const GRAPH_VERSION = 'v26.0';
 // the Page's About > Page transparency, not the number in its profile.php web address.
 const PAGE_ID = process.env.FB_PAGE_ID || '1301081723094199';
 const POST_COUNT = 6; // 1 featured + 5 in the grid
-const OUT_FILE = new URL('../docs/src/js/news/posts.json', import.meta.url);
+const OUT_FILE = new URL('../docs/src/js/sections/news/posts.json', import.meta.url);
 
 // Trim so a stray space or newline pasted into the secret doesn't break the token.
 const token = process.env.FB_PAGE_TOKEN?.trim();
@@ -73,4 +73,4 @@ const items = body.data
   .map(toNewsItem);
 
 await writeFile(OUT_FILE, JSON.stringify(items, null, 2) + '\n');
-console.log(`Saved ${items.length} post(s) to docs/src/js/news/posts.json`);
+console.log(`Saved ${items.length} post(s) to docs/src/js/sections/news/posts.json`);

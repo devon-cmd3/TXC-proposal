@@ -1,0 +1,74 @@
+/* ============================================================
+   Fixtures tab (#fixturesView): the Featured Match box and the
+   Date / Sport filters. The match cards themselves are styled in
+   components/match-card.css.
+   ============================================================ */
+
+/* ---------- Featured Match box ---------- */
+.featured-match{ margin-bottom:26px; }
+
+.featured-match__topbar{
+  background:var(--navy); color:var(--lime);
+  font-family:var(--font-display); font-weight:700; font-size:13px;
+  text-transform:uppercase; letter-spacing:.08em; text-align:center;
+  padding:10px 16px;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+
+/* "‹ Mon, Oct 12 ›" row */
+.featured-match__pagination{
+  display:flex; align-items:center; justify-content:center; gap:18px;
+  background:var(--cream-card);
+  border-left:1px solid var(--border); border-right:1px solid var(--border);
+  padding:10px 16px;
+}
+.featured-match__pagination button{
+  width:28px; height:28px; border-radius:50%; border:none; background:none;
+  font-size:18px; line-height:1; color:var(--navy); cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.featured-match__pagination button:hover:not(:disabled){ background:rgba(16,27,69,.08); }
+.featured-match__pagination button:disabled{ opacity:.3; cursor:default; }
+.featured-match__date{
+  font-family:var(--font-display); font-weight:700; font-size:14px; min-width:160px; text-align:center;
+}
+
+/* Pure spacer/background: gives the floating .fixture-card__tag
+   (which pokes up above the card's own top edge) room to clear the
+   pagination bar above it, and squares off the bottom corners. */
+.featured-match__card-wrap{
+  padding:24px 16px 16px;
+  background:var(--cream-card);
+  border:1px solid var(--border); border-top:none;
+  border-radius:0 0 var(--radius) var(--radius);
+}
+
+/* ---------- Date / Sport filters ---------- */
+.view-controls{
+  display:flex; align-items:center; justify-content:flex-start; flex-wrap:wrap; gap:14px;
+  margin-bottom:30px; /* clears the first fixture card's floating sport tag */
+}
+
+.filter-group{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.filter-group label{ font-size:12px; font-weight:600; color:var(--muted); }
+.filter-group select{
+  padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--border);
+  background:var(--white); font-family:var(--font-body); font-size:13px; color:var(--ink);
+}
+
+
+/* ---------- Tablets & phones (≤760px) ---------- */
+@media (max-width:760px){
+  /* Date and Sport side by side: each label sits above its dropdown
+     (DOM order is label, select, label, select, so fill by column). */
+  .filter-group{
+    display:grid; grid-template-columns:1fr 1fr; grid-template-rows:auto auto;
+    grid-auto-flow:column; column-gap:10px; row-gap:4px; width:100%;
+  }
+  .filter-group select{ width:100%; min-width:0; }
+}
+
+/* ---------- Small phones (≤420px) ---------- */
+@media (max-width:420px){
+  .filter-group select{ padding:8px 8px; font-size:12.5px; }
+}

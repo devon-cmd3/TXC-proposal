@@ -1,0 +1,73 @@
+/* ============================================================
+   Match card (classes start with .fixture-card), plus the list
+   that stacks them. Built by js/components/matchCard.js and used
+   on the Fixtures tab, in the Featured Match box and in the
+   Calendar's day detail.
+
+   Structure: a floating sport tag on the card's top edge, a
+   3-column grid (home team / score + time / away team), and a
+   status line under the card.
+   ============================================================ */
+
+/* A vertical list of cards. The big gap lets each card's status line
+   clear the next card's floating sport tag (which pokes 13px above
+   its card). */
+.fixtures-grid{ display:flex; flex-direction:column; gap:34px; }
+
+.fixture-card-wrap{ position:relative; }
+
+.fixture-card__tag{
+  position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+  background:var(--navy); color:var(--lime);
+  font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.5px;
+  padding:5px 14px; border-radius:var(--radius-pill); white-space:nowrap; z-index:1;
+}
+
+.fixture-card{
+  background:var(--white); border-radius:var(--radius);
+  padding:26px 20px 18px; box-shadow:var(--shadow-sm);
+  display:grid; grid-template-columns:1fr 1.2fr 1fr; align-items:center; column-gap:10px;
+}
+/* The visitor's chosen team is playing. */
+.fixture-card-wrap.mine .fixture-card{ box-shadow:0 0 0 2px var(--lime-deep), var(--shadow-sm); }
+
+/* Team columns */
+.fixture-card__team{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+.fixture-card__team--home{ align-items:flex-start; text-align:left; }
+.fixture-card__team--away{ align-items:flex-end; text-align:right; }
+.fixture-card__team-name{ font-size:14.5px; font-weight:700; color:var(--ink); }
+.fixture-card__team-name.team-mine{ color:var(--lime-deep); }
+.fixture-card__team-sub{ font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; }
+
+/* Middle column: score VS score, kick-off time */
+.fixture-card__center{ display:flex; flex-direction:column; align-items:center; gap:5px; }
+.fixture-card__score-row{ display:flex; align-items:baseline; gap:9px; }
+.fixture-card__score{ font-family:var(--font-display); font-weight:700; font-size:21px; color:var(--navy); }
+.fixture-card__vs{ font-size:10.5px; font-weight:700; color:var(--muted); letter-spacing:.5px; }
+.fixture-card__time{ font-size:11.5px; color:var(--muted); }
+
+/* Status line under the card: status · venue · date */
+.fixture-card__footer{
+  display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:4px 10px;
+  margin-top:12px; font-size:12px; color:var(--muted);
+}
+.fixture-card__footer-sep{ opacity:.45; }
+.fixture-card-wrap.finished .fixture-card__footer{ color:var(--navy); font-weight:600; }
+.fixture-card-wrap.ongoing .fixture-card__footer{ color:var(--green); font-weight:600; animation:pulse 1.3s infinite; }
+
+
+/* ---------- Tablets & phones (≤760px) ---------- */
+@media (max-width:760px){
+  .fixture-card{ padding:24px 14px 16px; column-gap:6px; }
+  .fixture-card__team-name{ font-size:13px; }
+  .fixture-card__score{ font-size:18px; }
+}
+
+/* ---------- Small phones (≤420px) ---------- */
+@media (max-width:420px){
+  .fixture-card{ grid-template-columns:1fr 1fr 1fr; column-gap:4px; padding:22px 10px 14px; }
+  .fixture-card__team-name{ font-size:11.5px; }
+  .fixture-card__team-sub{ font-size:9.5px; }
+  .fixture-card__score{ font-size:16px; }
+  .fixture-card__score-row{ gap:5px; }
+}

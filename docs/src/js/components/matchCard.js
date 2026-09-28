@@ -1,18 +1,18 @@
 /**
- * Match Fixture Card component
+ * Match card
  * ------------------------------------------------------------
- * Everything about turning one fixture into a score card:
- * working out whether it's finished/ongoing/upcoming, and
- * building the HTML for it. Used by the Fixtures tab, the
- * My Schedule day detail, and the Featured Match widget.
+ * Turns one fixture into a score card, and works out whether that
+ * game is finished, live or upcoming. Used by the Fixtures list, the
+ * Featured Match box and the Calendar's day detail.
  *
- * Layout (see styles.css "Match Fixture Card" section):
+ * Card layout (styles in css/components/match-card.css):
  *   - a floating tag on the card's top edge showing the sport
- *   - a 3-column grid: home team | score — VS — score + time | away team
- *   - a muted status line below the card (status + venue + date)
+ *   - 3 columns: home team | score VS score + time | away team
+ *   - a status line under the card: status · venue · date
  */
-import { TODAY, NOW_MINUTES, GAME_DURATION_MIN, timeToMinutes } from '../data/fixtures.js';
+import { CONFIG } from '../config.js';
 import { TEAMS } from '../data/teams.js';
+import { timeToMinutes, formatShortDate } from '../utils/dates.js';
 
 const MASCOT_BY_TEAM = Object.fromEntries(TEAMS.map(t => [t.name, t.mascot]));
 
@@ -22,12 +22,13 @@ const STATUS_LABEL = {
   UPCOMING: "Upcoming",
 };
 
+/** "FINISHED", "ONGOING" or "UPCOMING", judged against CONFIG's pretend clock. */
 export function computeStatus(fx){
-  if(fx.date < TODAY) return "FINISHED";
-  if(fx.date > TODAY) return "UPCOMING";
+  if(fx.date < CONFIG.TODAY) return "FINISHED";
+  if(fx.date > CONFIG.TODAY) return "UPCOMING";
   const start = timeToMinutes(fx.time);
-  if(NOW_MINUTES < start) return "UPCOMING";
-  if(NOW_MINUTES >= start + GAME_DURATION_MIN) return "FINISHED";
+  if(CONFIG.NOW_MINUTES < start) return "UPCOMING";
+  if(CONFIG.NOW_MINUTES >= start + CONFIG.GAME_DURATION_MIN) return "FINISHED";
   return "ONGOING";
 }
 
@@ -43,22 +44,19 @@ function teamColumnHtml(teamName, savedTeam, side){
 }
 
 /**
- * @param {object} fx - a single fixture from data/fixtures.js
- * @param {string} savedTeam - the visitor's chosen team name, so
- *   their team's name and games can be highlighted. Pass "" if
- *   there isn't one.
+ * @param {object} fx - one fixture from data/fixtures.js
+ * @param {string} savedTeam - the visitor's chosen team, so their
+ *   name and games are highlighted. Pass "" if there isn't one.
+ * @returns {string} the card's HTML
  */
 export function renderCard(fx, savedTeam = ""){
   const status = computeStatus(fx);
   const statusClass = status.toLowerCase();
   const isMine = fx.teamA === savedTeam || fx.teamB === savedTeam;
 
-  // The dataset pre-generates a finalScore for every fixture (so results
-  // are consistent), but only a FINISHED game should reveal it — showing
-  // it early would spoil an ongoing/upcoming match.
+  // Every fixture has a finalScore so results stay consistent, but only
+  // a finished game reveals it; showing it early would spoil the match.
   const [scoreA, scoreB] = status === "FINISHED" ? fx.finalScore.split(" - ") : ["–", "–"];
-
-  const shortDate = fx.date.slice(5).replace('-', '/');
 
   return `
     <div class="fixture-card-wrap ${statusClass}${isMine ? ' mine' : ''}">
@@ -80,7 +78,7 @@ export function renderCard(fx, savedTeam = ""){
         <span class="fixture-card__footer-sep" aria-hidden="true">&middot;</span>
         <span>📍 ${fx.venue}</span>
         <span class="fixture-card__footer-sep" aria-hidden="true">&middot;</span>
-        <span>${shortDate}</span>
+        <span>${formatShortDate(fx.date)}</span>
       </div>
     </div>
   `;
