@@ -12,8 +12,8 @@
 import { writeFile } from 'node:fs/promises';
 
 const GRAPH_VERSION = 'v26.0';
-// CSG Facebook Page ("Campus Compass Test" for now). Swap the ID when the real page is ready.
-const PAGE_ID = process.env.FB_PAGE_ID || '61594777864840';
+// CSG Facebook Page ("Campuss Compass TEST" for now). Swap the ID when the real page is ready.
+const PAGE_ID = process.env.FB_PAGE_ID || '61595123270779';
 const POST_COUNT = 6; // 1 featured + 5 in the grid
 const OUT_FILE = new URL('../docs/src/js/news/posts.json', import.meta.url);
 

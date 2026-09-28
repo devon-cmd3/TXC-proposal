@@ -27,5 +27,5 @@ export const CONFIG = {
   // CSG Facebook Page. News cards without a link to their own post
   // (e.g. the placeholders in news/news.js) send their
   // "View on Facebook" button here instead.
-  CSG_FACEBOOK_URL: "https://www.facebook.com/profile.php?id=61594777864840",
+  CSG_FACEBOOK_URL: "https://www.facebook.com/profile.php?id=61595123270779",
 };
